@@ -1,0 +1,9 @@
+Purpose:
+  Configures network settings for the default network interface
+
+Required Variables:
+  - ip
+  - netmask
+  - gateway
+  - dns1
+  - dns2

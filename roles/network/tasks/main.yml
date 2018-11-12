@@ -1,0 +1,9 @@
+---
+- name: 'Configure the network settings for this interface'
+  template:
+    src: ifcfg.j2
+    dest: /etc/sysconfig/network-scripts/ifcfg-{{ ansible_default_ipv4.interface }}
+    owner: root
+    group: root
+    mode: 0644
+  notify: Restart Network

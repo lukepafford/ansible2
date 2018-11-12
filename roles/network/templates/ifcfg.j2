@@ -1,0 +1,10 @@
+IPV6INIT="no"
+BOOTPROTO="static"
+DEVICE={{ ansible_default_ipv4.interface }}
+ONBOOT="yes"
+NM_CONTROLLEd=no
+IPADDR={{ ip }}
+NETMASK={{ netmask }}
+GATEWAY={{ gateway }}
+DNS1={{ dns1 }}
+DNS2={{ dns2 }}
