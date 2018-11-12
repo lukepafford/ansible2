@@ -1,6 +1,10 @@
+hosts
 ansible.cfg
 update-hosts
 host_vars/
 group_vars/
 secrets/
 *.retry
+node_modules/
+package.json
+package-lock.json
