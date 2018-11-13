@@ -1,0 +1,6 @@
+Ensures that the system has required repos installed.
+
+Requried repos are:
+  - centos-release
+  - epel-release
+  - nodesource
