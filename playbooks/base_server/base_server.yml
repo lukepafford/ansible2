@@ -3,7 +3,7 @@
   environment:
     NODE_PATH: '/usr/lib/node_modules'
   roles:
+    - network
     - repos
     - software
-    - network
     - sudoers
