@@ -1,0 +1,11 @@
+Adding a new host tasks:
+- Add the host to my ~/.ssh/config file
+- Create a host_vars file for the new host.
+  I must at least specify the following variables:
+    - ip
+- Add the host entry to my /etc/hosts file
+- Configure the virtual machine to autostart
+- If the host already existed and I am reusing it:
+  * Rename the hostname
+  * Configure the network settings so that I can SSH into it
+  * Rename the KVM virtual machine label
