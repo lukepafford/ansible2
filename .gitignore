@@ -1,6 +1,5 @@
 hosts
 ansible.cfg
-update-hosts
 host_vars/
 group_vars/
 template/
@@ -9,3 +8,5 @@ secrets/
 node_modules/
 package.json
 package-lock.json
+update-hosts.sh
+get-kvm-hosts.sh
