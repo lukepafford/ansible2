@@ -6,3 +6,11 @@
       - git
       - nodejs
     state: present
+
+- name: Install required NPM packages
+  npm:
+    name: '{{ item }}'
+    global: yes
+  loop:
+    - axios
+    - htmlparser2
