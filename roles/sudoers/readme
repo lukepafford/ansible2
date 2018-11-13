@@ -1,0 +1,6 @@
+Requires no configuration.
+
+Configures sudoers with the default settings.
+
+members of the wheel group can use sudo without a password,
+and there is not instance of 'requiretty' in the configuration
