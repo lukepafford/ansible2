@@ -1,0 +1,38 @@
+# Helper function to execute playbooks quickly
+# Set the ANSIBLE_HOME environment variable
+# Will find the playbook if you follow the directory structure of
+# ANSIBLE_HOME/playbooks/playbookName
+# The function will match the playbook if the playbook directory matches
+# the argument provided with a ".yml" extension , or your playbook file is "main.yml"
+function ap {
+  local playbook="$1"
+  shift
+  local args="$@"
+
+  if [[ -z "${ANSIBLE_HOME}" ]]; then
+    echo "Environment variable ANSIBLE_HOME must be defined!"
+    exit 1
+  fi  
+
+  playbookName=$(basename ${playbook} .yml)
+  playbookDir=${ANSIBLE_HOME}/playbooks/${playbookName}
+
+  mainName=0
+  for f in $(find ${playbookDir} -type f); do
+    fileName=$(basename ${f})
+    if [[ "${fileName}" == "main.yml" ]]; then
+      playbook="${playbookDir}/main.yml"
+      mainName=1
+    fi  
+  done
+  
+  if [[ "${mainName}" -eq 0 ]]; then
+    playbook="${playbookDir}/${playbookName}.yml"
+  fi  
+
+  if [[ -n "${args}" ]]; then
+    ansible-playbook "${playbook}" -b "${args}"
+  else
+    ansible-playbook "${playbook}" -b
+  fi  
+}
