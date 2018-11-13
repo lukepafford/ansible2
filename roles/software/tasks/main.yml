@@ -1,0 +1,8 @@
+---
+- name: Install required packages
+  yum:
+    name:
+      - vim
+      - git
+      - nodejs
+    state: present
