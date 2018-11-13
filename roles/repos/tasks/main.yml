@@ -6,6 +6,16 @@
       - epel-release
     state: 'present'
 
+- name: Install required GPG keys
+  copy:
+    src: '{{ item }}'
+    dest: /etc/pki/rpm-gpg
+    owner: root
+    group: root
+    mode: 0644
+  loop:
+    - NODESOURCE-GPG-SIGNING-KEY-EL
+
 - name: Configure known repo files
   copy:
     src: '{{ item }}'
