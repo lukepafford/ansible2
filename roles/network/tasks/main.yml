@@ -7,3 +7,6 @@
     group: root
     mode: 0644
   notify: Restart Network
+
+- name: Flush the network handler to apply network settings before continuing
+  meta: flush_handlers
