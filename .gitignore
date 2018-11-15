@@ -10,3 +10,4 @@ package.json
 package-lock.json
 update-hosts.sh
 get-kvm-hosts.sh
+defaults/
