@@ -1,4 +1,11 @@
 ---
+- name: Remove old, or invalid repo files
+  file:
+    path: '{{ item }}'
+    state: absent
+  loop: '{{ invalidRepos }}'
+  when: invalidRepos is defined
+
 - name: Intall repositories packaged as RPMs
   yum:
     name:
@@ -15,7 +22,7 @@
     mode: 0644
   loop:
     - NODESOURCE-GPG-SIGNING-KEY-EL
-
+    
 - name: Configure known repo files
   copy:
     src: '{{ item }}'
