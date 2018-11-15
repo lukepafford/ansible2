@@ -1,0 +1,9 @@
+Simple keepalived confiuration for two haproxy nodes.
+
+The following variables must be defined:
+
+Required Variables:
+  - keepaliveState: MASTER or BACKUP defined in host variable file
+  - keepalivePriority: Integer defined in host variable file
+  - virtualRouterId: Same integer value defined in variables
+  - virtualIp: Same IP address defined in variables
