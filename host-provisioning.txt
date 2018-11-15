@@ -10,3 +10,5 @@ Adding a new host tasks:
   * Rename the hostname
   * Configure the network settings so that I can SSH into it
   * Rename the KVM virtual machine label
+  * Remove legacy files. My legacy files are:
+    - /etc/cron.d/ansible-pull
