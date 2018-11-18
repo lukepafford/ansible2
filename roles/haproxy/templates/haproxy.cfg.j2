@@ -24,7 +24,6 @@ global
     #    local2.*                       /var/log/haproxy.log
     #
     log         127.0.0.1 local2
-    log /var/lib/haproxy/dev/log local0
     chroot      /var/lib/haproxy
     pidfile     /var/run/haproxy.pid
     maxconn     4000
@@ -64,15 +63,17 @@ frontend  main
     bind *:80
     bind *:443 ssl crt /etc/pki/tls/certs/fullCert.pem
     mode http
-    redirect scheme https if !{ ssl_fc }
+
+    stats enable
+    stats auth {{ statsUser }}:{{ statsPass }}
     stats uri /haproxy?stats
+
+    redirect scheme https if !{ ssl_fc }
     use_backend jenkins if { path_beg /jenkins }
+#    default_backend jenkins
 
 backend jenkins
-  server cicd-01 192.168.122.50:8080
+  server cicd-01 192.168.122.50:8080 check
   mode http
-  http-request set-header X-Forwarded-Port %[dst_port]
-  http-request add-header X-Forwarded-Proto https if { ssl_fc }
-  reqrep ^([^\ :]*)\ /(.*)     \1\ /\2
-  acl response-is-redirect res.hdr(Location) -m found
-  rspirep ^Location:\ (http)://192.168.122.50:8080/(.*)   Location:\ https://lukepafford.com:443/jenkins/\2  if response-is-redirect
+  option forwardfor
+  reqirep ^([^\ :]*)\ /jenkins/(.*)     \1\ /jenkins/\2
