@@ -63,12 +63,16 @@ defaults
 frontend  main
     bind *:80
     bind *:443 ssl crt /etc/pki/tls/certs/fullCert.pem
+    mode http
     redirect scheme https if !{ ssl_fc }
-    acl acl_jenkins	path_beg /jenkins
     stats uri /haproxy?stats
-
-    use_backend jenkins if acl_jenkins
+    use_backend jenkins if { path_beg /jenkins }
 
 backend jenkins
   server cicd-01 192.168.122.50:8080
   mode http
+  http-request set-header X-Forwarded-Port %[dst_port]
+  http-request add-header X-Forwarded-Proto https if { ssl_fc }
+  reqrep ^([^\ :]*)\ /(.*)     \1\ /\2
+  acl response-is-redirect res.hdr(Location) -m found
+  rspirep ^Location:\ (http)://192.168.122.50:8080/(.*)   Location:\ https://lukepafford.com:443/jenkins/\2  if response-is-redirect

@@ -53,6 +53,7 @@
     group: root
     mode: 0644
   notify: Reload haproxy
+  tags: config
 
 - name: Start and enable HAProxy
   service:
