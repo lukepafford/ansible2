@@ -22,6 +22,7 @@
     owner: root
     group: root
     mode: 0600
+  notify: Restart jenkins
 
 - name: Install Jenkins
   yum:
