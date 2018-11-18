@@ -3,3 +3,13 @@
   service: 
     name: haproxy
     state: reloaded
+
+- name: Restart haproxy
+  service:
+    name: haproxy
+    state: restarted
+
+- name: Generate new bundle
+  shell: cat fullchain.pem privkey.pem > fullCert.pem
+  args:
+    chdir: /etc/pki/tls/certs

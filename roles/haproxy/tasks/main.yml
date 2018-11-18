@@ -1,15 +1,48 @@
 ---
 - name: Install HAProxy
   yum:
-    name: haproxy
+    name: 
+      - haproxy
+      - certbot
     state: latest
 
 - name: Configure firewalld for haproxy
   firewalld: 
-    service: https
+    service: '{{ item }}'
     permanent: yes
     state: enabled
     immediate: yes
+  loop:
+    - http
+    - https
+
+- name: Fetch our certificates from the host we installed them on using Lets Encrypt. This task must be performed first, and is external to this role
+  fetch:
+    src: /etc/letsencrypt/live/{{ domain }}/{{ item }}
+    dest: '{{ item }}'
+    flat: yes
+  loop:
+    - cert.pem
+    - chain.pem
+    - fullchain.pem
+    - privkey.pem
+  delegate_to: '{{ certHost }}'
+
+- name: Sync the certificates to all the hosts
+  copy:
+    src: '{{ item }}'
+    dest: /etc/pki/tls/certs
+    owner: root
+    group: haproxy
+    mode: 0640
+  loop:
+    - cert.pem
+    - chain.pem
+    - fullchain.pem
+    - privkey.pem
+  notify: 
+    - Generate new bundle
+    - Restart haproxy
 
 - name: Configure haproxy
   template:

@@ -24,7 +24,7 @@ global
     #    local2.*                       /var/log/haproxy.log
     #
     log         127.0.0.1 local2
-
+    log /var/lib/haproxy/dev/log local0
     chroot      /var/lib/haproxy
     pidfile     /var/run/haproxy.pid
     maxconn     4000
@@ -60,32 +60,15 @@ defaults
 #---------------------------------------------------------------------
 # main frontend which proxys to the backends
 #---------------------------------------------------------------------
-frontend  main *:443
-    acl url_static       path_beg       -i /static /images /javascript /stylesheets
-    acl url_static       path_end       -i .jpg .gif .png .css .js
-    acl acl_cicd	path_beg /cicd
+frontend  main
+    bind *:80
+    bind *:443 ssl crt /etc/pki/tls/certs/fullCert.pem
+    redirect scheme https if !{ ssl_fc }
+    acl acl_jenkins	path_beg /jenkins
+    stats uri /haproxy?stats
 
-    use_backend cicd if acl_cicd
-    use_backend static          if url_static
-    default_backend             app
+    use_backend jenkins if acl_jenkins
 
-#---------------------------------------------------------------------
-# static backend for serving up images, stylesheets and such
-#---------------------------------------------------------------------
-backend static
-    balance     roundrobin
-    server      static 127.0.0.1:4331 check
-
-backend cicd
-	balance roundrobin
-	server cicd-01 192.168.122.50:8080 check
-#---------------------------------------------------------------------
-# round robin balancing between the various backends
-#---------------------------------------------------------------------
-backend app
-    balance     roundrobin
-    server  app1 127.0.0.1:5001 check
-    server  app2 127.0.0.1:5002 check
-    server  app3 127.0.0.1:5003 check
-    server  app4 127.0.0.1:5004 check
-
+backend jenkins
+  server cicd-01 192.168.122.50:8080
+  mode http

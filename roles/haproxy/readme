@@ -1,0 +1,13 @@
+Configures HAProxy.
+
+Expects that the certbot client was used to install certificates onto one of the servers.
+This host must be specified in the variable 'certHost'.
+The certificates will be fetched from that server, and then distributed to all Load balancers.
+
+This role is current unusable for anyone but myself because I have not abstracted
+the haproxy configuration. The template has my values hard coded right now.
+
+
+Required Variables:
+  - certHost - Host where certbot was ran to acquire certificate from Letsencrypt
+  - domain
