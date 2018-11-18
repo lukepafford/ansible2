@@ -1,1 +1,4 @@
 Simple Jenkins role for configuring the Jenkins repo, Installing jenkins, and opening up the firewall
+
+Configures the Jenkins app to run under the path prefix '/jenkins'
+This allows for easy proxy configuration behind HAProxy

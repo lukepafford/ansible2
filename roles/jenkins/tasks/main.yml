@@ -15,6 +15,14 @@
     group: root
     mode: 0644
 
+- name: Configure Jenkins startup options
+  copy:
+    src: jenkins
+    dest: /etc/sysconfig
+    owner: root
+    group: root
+    mode: 0600
+
 - name: Install Jenkins
   yum:
     name: 
