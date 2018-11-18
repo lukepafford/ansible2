@@ -56,6 +56,15 @@
   notify: Restart haproxy
   tags: config
 
+- name: Configure rsyslog for HAProxy logging
+  copy:
+    src: haproxy-log.conf
+    dest: /etc/rsyslog.d/haproxy.conf
+    owner: root
+    group: root
+    mode: 0644
+  notify: Restart rsyslog
+
 - name: Start and enable HAProxy
   service:
     name: haproxy

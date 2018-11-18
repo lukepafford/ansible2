@@ -1,12 +1,12 @@
 ---
-- name: Reload haproxy
-  service: 
-    name: haproxy
-    state: reloaded
-
 - name: Restart haproxy
   service:
     name: haproxy
+    state: restarted
+
+- name: Restart rsyslog
+  service:
+    name: rsyslog
     state: restarted
 
 - name: Generate new bundle
