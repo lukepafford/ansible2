@@ -42,6 +42,7 @@
     - privkey.pem
   notify: 
     - Generate new bundle
+    - Set bundle permissions
     - Restart haproxy
 
 - name: Configure haproxy

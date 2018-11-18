@@ -13,3 +13,11 @@
   shell: cat fullchain.pem privkey.pem > fullCert.pem
   args:
     chdir: /etc/pki/tls/certs
+
+- name: Set bundle permissions
+  file:
+    path: /etc/pki/tls/certs/fullCert.pem
+    state: file
+    mode: 0640
+    owner: root
+    group: haproxy
