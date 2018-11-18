@@ -7,7 +7,10 @@ The certificates will be fetched from that server, and then distributed to all L
 This role is current unusable for anyone but myself because I have not abstracted
 the haproxy configuration. The template has my values hard coded right now.
 
+Role enables HAProxy stats at url https://load-balancer:443/haproxy?stats
 
 Required Variables:
   - certHost - Host where certbot was ran to acquire certificate from Letsencrypt
   - domain
+  - statsUser # Stats username and password credentials when prompted for stats
+  - statsPass

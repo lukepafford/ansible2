@@ -8,13 +8,13 @@
 
 - name: Configure firewalld for haproxy
   firewalld: 
-    service: '{{ item }}'
+    port: '{{ item }}'
     permanent: yes
     state: enabled
     immediate: yes
   loop:
-    - http
-    - https
+    - 80/tcp
+    - 443/tcp
 
 - name: Fetch our certificates from the host we installed them on using Lets Encrypt. This task must be performed first, and is external to this role
   fetch:
@@ -52,7 +52,8 @@
     owner: root
     group: root
     mode: 0644
-  notify: Reload haproxy
+    validate: /sbin/haproxy -f %s -c
+  notify: Restart haproxy
   tags: config
 
 - name: Start and enable HAProxy
