@@ -1,0 +1,38 @@
+---
+- name: Install icinga2 repository
+  yum:
+    name: https://packages.icinga.com/epel/icinga-rpm-release-7-latest.noarch.rpm
+    state: present
+
+- name: Install icinga postgres packages
+  yum:
+    name:
+      - icinga2-ido-pgsql
+    state: present
+  notify: Initiate icinga database
+
+- name: Render the icinga database provision script
+  template:
+    src: icinga.sql.j2
+    dest: /tmp/icinga.sql
+    owner: postgres
+    group: root
+    mode: 0770
+
+- name: Check if the icinga database exists
+  command: psql -h 127.0.0.1 -d icinga -c ''
+  become_user: postgres
+  register: dbResults
+  changed_when: dbResults.rc == 2
+  failed_when: false
+
+- name: Initialize icinga database
+  command: psql -h 127.0.0.1 -f /tmp/icinga.sql
+  become_user: postgres
+  when: dbResults.rc == 2
+
+- name: Initialize icinga schema
+  command: psql -h 127.0.0.1 -U icinga -d icinga -f /usr/share/icinga2-ido-pgsql/schema/pgsql.sql
+  environment:
+    PGPASSWORD: '{{ icingaPassword }}'
+  when: dbResults.rc == 2

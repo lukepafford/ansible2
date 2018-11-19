@@ -9,6 +9,23 @@
   args:
     creates: /var/lib/pgsql/data/pg_hba.conf
 
+- name: Create log directory
+  file:
+    path: /var/log/postgresql
+    owner: postgres
+    group: postgres
+    mode: 0770
+    state: directory
+  notify: Restart postgresql
+
+- name: Configure rsyslog for postgresql
+  copy:
+    src: postgresql-log.conf
+    dest: /etc/rsyslog.d/postgresql.conf
+    owner: root
+    group: root
+    mode: 0644
+
 - name: Configure Postgresql
   template: 
     src: '{{ item.src }}'
@@ -21,6 +38,10 @@
     - { src: 'pg_hba.conf.j2', dest: 'pg_hba.conf' }
     - { src: 'pg_ident.conf.j2', dest: 'pg_ident.conf' }
   notify: Restart postgresql
+  tags: config
+
+- name: Flush handlers so HBA changes can be made before proceeding
+  meta: flush_handlers
 
 - name: Configure firewall to allow postgresql
   firewalld:
@@ -34,3 +55,5 @@
     name: postgresql
     state: started
     enabled: yes
+
+- include: icinga.yml
