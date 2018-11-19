@@ -1,0 +1,4 @@
+---
+- name: Reload postgresql
+  command: pg_ctl reload -D {{ dataDir }}
+  become_user: postgres

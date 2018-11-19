@@ -1,0 +1,36 @@
+---
+- name: Install Postgresql
+  yum:
+    name: postgresql-server
+    state: present
+
+- name: Run Postgresql-Setup
+  command: postgresql-setup initdb
+  args:
+    creates: /var/lib/pgsql/data/pg_hba.conf
+
+- name: Configure Postgresql
+  template: 
+    src: '{{ item.src }}'
+    dest: '{{ dataDir }}/{{ item.dest }}'
+    owner: postgres
+    group: postgres
+    mode: 0600
+  loop:
+    - { src: 'postgresql.conf.j2', dest: 'postgresql.conf' }
+    - { src: 'pg_hba.conf.j2', dest: 'pg_hba.conf' }
+    - { src: 'pg_ident.conf.j2', dest: 'pg_ident.conf' }
+  notify: Reload postgresql
+
+- name: Configure firewall to allow postgresql
+  firewalld:
+    port: 5432/tcp
+    permanent: yes
+    state: enabled
+    immediate: true
+
+- name: Start and enable Postgresql
+  service:
+    name: postgresql
+    state: started
+    enabled: yes

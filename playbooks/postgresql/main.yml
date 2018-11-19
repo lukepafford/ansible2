@@ -1,0 +1,8 @@
+---
+- hosts: mon-01
+  name: Gather facts from external hosts. Facts will be used for HBA configurations
+  tasks: []
+
+- hosts: postgresServers
+  roles:
+    - postgresql

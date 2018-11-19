@@ -1,0 +1,17 @@
+Configures Postgresql server
+
+Installs Postgres, initiates the server, enables the firewall, and starts the service.
+Role Features:
+  - HBA entries
+
+required variabes:
+  - dataDir - directory which contains postgresql.conf, and pg_Hba.conf, etc
+
+HBA Entries can be specified with the following variable declaratoins:
+hba:
+  - entryName:
+      type:
+      database:
+      user:
+      address:
+      method:
