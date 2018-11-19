@@ -1,4 +1,5 @@
 ---
-- name: Reload postgresql
-  command: pg_ctl reload -D {{ dataDir }}
-  become_user: postgres
+- name: Restart postgresql
+  service:
+    name: postgresql
+    state: restarted

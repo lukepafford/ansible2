@@ -6,6 +6,7 @@ Role Features:
 
 required variabes:
   - dataDir - directory which contains postgresql.conf, and pg_Hba.conf, etc
+  - maxConnections - number of maximum connections allowed to the server
 
 HBA Entries can be specified with the following variable declarations:
 hba:

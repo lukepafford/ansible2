@@ -56,14 +56,14 @@
 
 # - Connection Settings -
 
-#listen_addresses = 'localhost'		# what IP address(es) to listen on;
+listen_addresses = '*'		# what IP address(es) to listen on;
 					# comma-separated list of addresses;
 					# defaults to 'localhost'; use '*' for all
 					# (change requires restart)
 #port = 5432				# (change requires restart)
 # Note: In RHEL/Fedora installations, you can't set the port number here;
 # adjust it in the service file instead.
-max_connections = 100			# (change requires restart)
+max_connections = {{ maxConnections }}			# (change requires restart)
 # Note:  Increasing max_connections costs ~400 bytes of shared memory per
 # connection slot, plus lock space (see max_locks_per_transaction).
 #superuser_reserved_connections = 3	# (change requires restart)

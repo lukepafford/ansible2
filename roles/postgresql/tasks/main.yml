@@ -20,7 +20,7 @@
     - { src: 'postgresql.conf.j2', dest: 'postgresql.conf' }
     - { src: 'pg_hba.conf.j2', dest: 'pg_hba.conf' }
     - { src: 'pg_ident.conf.j2', dest: 'pg_ident.conf' }
-  notify: Reload postgresql
+  notify: Restart postgresql
 
 - name: Configure firewall to allow postgresql
   firewalld:
