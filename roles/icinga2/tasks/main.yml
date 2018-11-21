@@ -51,6 +51,15 @@
   when: apiEnabled.rc == 1
   notify: Restart icinga2
 
+- name: Configure the API user
+  template:
+    src: api-users.conf.j2
+    dest: /etc/icinga2/conf.d/api-users.conf
+    owner: icinga
+    group: icinga
+    mode: 0640
+  notify: Restart icinga2
+
     # 5665/tcp is the api port
 - name: Configure the fireall to open web ports
   firewalld:

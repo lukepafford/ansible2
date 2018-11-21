@@ -1,6 +1,7 @@
 Configures icinga2 with a postgresql backend.
-Configures the api
+Configures the api, and api root user
 
 
 Required variables:
   - icingaPassword - Postgresql password for the icinga role
+  - apiPassword  - password for root account to authenticate api calls
