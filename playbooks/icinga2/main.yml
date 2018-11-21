@@ -1,0 +1,4 @@
+---
+- hosts: mon-01
+  roles:
+    - icinga2

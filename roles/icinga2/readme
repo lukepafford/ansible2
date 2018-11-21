@@ -1,0 +1,6 @@
+Configures icinga2 with a postgresql backend.
+Configures the api
+
+
+Required variables:
+  - icingaPassword - Postgresql password for the icinga role

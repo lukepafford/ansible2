@@ -1,0 +1,11 @@
+/**
+ * The IdoPgsqlConnection type implements PostgreSQL support
+ * for DB IDO.
+ */
+
+object IdoPgsqlConnection "ido-pgsql" {
+  user = "icinga"
+  password = "{{ icingaPassword }}"
+  host = "{{ hostvars['db-01']['ip'] }}"
+  database = "icinga"
+}

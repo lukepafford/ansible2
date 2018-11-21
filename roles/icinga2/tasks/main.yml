@@ -1,0 +1,74 @@
+---
+- name: Install icinga2 and centos-release-scl repository
+  yum:
+    name:
+      - https://packages.icinga.com/epel/icinga-rpm-release-7-latest.noarch.rpm
+      - centos-release-scl
+    state: present
+
+- name: Install icinga2 packages
+  yum:
+    name:
+      - icinga2
+      - nagios-plugins-all
+      - icinga2-selinux
+      - vim-icinga2
+      - icinga2-doc
+      - icinga2-ido-pgsql
+      - icingaweb2
+      - icingacli
+      - httpd
+    state: present
+
+- name: Configure the postgresql backend connection
+  template:
+    src: ido-pgsql.conf.j2
+    dest: /etc/icinga2/features-available/ido-pgsql.conf
+    owner: icinga
+    group: icinga
+    mode: 0640
+  notify: Restart icinga2
+
+- name: Check if the ido-pgsql feature is enabled
+  shell: /sbin/icinga2 feature list | grep '^Disabled' | grep --invert 'ido-pgsql' --silent
+  register: pgsqlEnabled
+  changed_when: pgsqlEnabled.rc == 1
+  failed_when: false
+
+- name: Enable the ido-pgsql feature
+  command: /sbin/icinga2 feature enable ido-pgsql
+  when: pgsqlEnabled.rc == 1
+  notify: Restart icinga2
+
+- name: Check if the icinga2 api feature is enabled
+  shell: /sbin/icinga2 feature list | grep '^Disabled' | grep --invert 'api' --silent
+  register: apiEnabled
+  changed_when: pgsqlEnabled.rc == 1
+  failed_when: false
+
+- name: Enable the api feature
+  command: /sbin/icinga2 api setup
+  when: apiEnabled.rc == 1
+  notify: Restart icinga2
+
+    # 5665/tcp is the api port
+- name: Configure the fireall to open web ports
+  firewalld:
+    port: '{{ item }}'
+    state: enabled
+    permanent: yes
+    immediate: yes
+  loop:
+    - 80/tcp
+    - 443/tcp
+    - 5665/tcp
+
+- name: Enable and start icinga2 services
+  service:
+    name: '{{ item }}'
+    state: started
+    enabled: yes
+  loop:
+    - icinga2
+    - httpd
+    - rh-php71-php-fpm
