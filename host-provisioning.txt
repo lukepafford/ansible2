@@ -5,6 +5,7 @@ Adding a new host tasks:
     - ip
 - Add the host entry to my /etc/hosts file
 - Add the host to Ansible inventory
+- modify sudoers to allow wheel group to run without a passwor
 - Configure the virtual machine to autostart
 - If the host already existed and I am reusing it:
   * Rename the hostname
