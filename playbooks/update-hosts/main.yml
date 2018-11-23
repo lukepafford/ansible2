@@ -1,0 +1,20 @@
+---
+- hosts: all
+  vars:
+    - reboot: no
+  tasks:
+  - name: Update all packages
+    yum:
+      name: '*'
+      state: latest
+      update_cache: yes
+
+  - name: Reboot the host when 'reboot' set to yes
+    reboot:
+    register: rebootData
+    when: reboot == 'yes'
+
+  - name: Display time of reboot
+    debug:
+      msg: 'Time elapsed for system {{ inventory_hostname }} reboot: {{ rebootData.elapsed }} seconds'
+    when: reboot == 'yes'
