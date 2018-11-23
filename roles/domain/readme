@@ -1,0 +1,4 @@
+Ensures that each host has the specified domain name
+
+required variables:
+  - domain - domain name for the host
