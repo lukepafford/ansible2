@@ -5,6 +5,9 @@
       - vim
       - git
       - nodejs
+      - policycoreutils-python
+      - psmisc
+      - lsof
     state: present
 
 - name: Install required NPM packages
