@@ -1,0 +1,3 @@
+---
+- name: Update certificate store
+  command: update-ca-trust extract

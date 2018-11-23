@@ -8,4 +8,5 @@
     - repos
     - software
     - sudoers
+    - self-signed-certs
     - rsyslog

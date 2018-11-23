@@ -1,0 +1,13 @@
+Configures self signed certificates for all hosts at /etc/pki/tls/certs/{{ inventory_hostname }}.crt
+
+All certs are fetched back onto the controller. These certs are then distributed to all 
+hosts at /etc/pki/ca-trust/source/anchor.
+Each host will update its certificate store withh the command update-ca-trust.
+
+This is a pretty simple of way of making sure all your hosts trust each other internally.
+
+Setting up your own CA scales easier, but I like the simplicity of this solution,
+sicne certificates are so critical to configuration, and I want to guarentee its running correctly.
+
+required variables:
+  - email - email address to go onto certificates
