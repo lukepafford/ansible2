@@ -1,0 +1,7 @@
+/var/log/postgresql.log {
+  rotate 5
+  create 0640 root postgres
+  dateext
+  minsize 1M
+  maxsize 50M
+}
