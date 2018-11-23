@@ -1,7 +1,21 @@
+WARNING: THIS ROLE USES PHP-FPM AND REMOVES PHP FROM APACHE
+
+WARNING: The icinga web app is SUPPOSED to create the icingaweb database for you.
+         It was NOT exhibiting this behavior. I instead had to modify the 
+         postgresql role to ensure the database was created with the schema
+         located at /usr/share/doc/icingaweb2/schema/pgsql.schema.sql that is
+         in the icingaweb2 package
+
+
 Configures icinga2 with a postgresql backend.
 Configures the api, and api root user
+
+Installs icingaweb2, and gets everything running,  but you must go to the endpoint, and follow the documentation
+for configuring the web portal.
 
 
 Required variables:
   - icingaPassword - Postgresql password for the icinga role
   - apiPassword  - password for root account to authenticate api calls
+  - icingaWebPassword - password for icinga Web to access the api
+  - timezone  - your timezone that is used in the php.ini file

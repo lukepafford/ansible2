@@ -15,10 +15,18 @@
       - vim-icinga2
       - icinga2-doc
       - icinga2-ido-pgsql
+      - icingaweb2-selinux
       - icingaweb2
       - icingacli
+      - ImageMagick
+      - sclo-php71-php-pecl-imagick
       - httpd
     state: present
+
+- name: Remove default php packages from the server
+  yum:
+    name: php
+    state: absent
 
 - name: Configure the postgresql backend connection
   template:
@@ -51,7 +59,7 @@
   when: apiEnabled.rc == 1
   notify: Restart icinga2
 
-- name: Configure the API user
+- name: Configure the API users
   template:
     src: api-users.conf.j2
     dest: /etc/icinga2/conf.d/api-users.conf
@@ -71,6 +79,32 @@
     - 80/tcp
     - 443/tcp
     - 5665/tcp
+
+# This web interface says its pointing to /etc/opt/rh/rh-php71/php.ini
+# but after wasting a lot of time, it absolutely does not
+- name: Configure icingaweb2 php.ini
+  template:
+    src: php.ini.j2
+    dest: '{{ item }}'
+    owner: root
+    group: root
+    mode: 0644
+  notify: Restart httpd
+  loop:
+    - /etc/opt/rh/rh-php71/php.ini
+    - /etc/php.ini
+    - /opt/rh/rh-php71/register.content/etc/opt/rh/rh-php71/php.ini
+
+- name: Remove php from apache
+  file:
+    state: absent
+    path: '{{ item }}'
+  loop: 
+    - /etc/httpd/conf.d/php.conf
+    - /etc/httpd/conf.modules.d/10-php.conf
+  notify: 
+    - Restart httpd
+    - Restart php-fpm
 
 - name: Enable and start icinga2 services
   service:

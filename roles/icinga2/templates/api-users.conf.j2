@@ -2,3 +2,8 @@ object ApiUser "root" {
   password = "{{ apiPassword }}"
   permissions = [ "*" ]
 }
+
+object ApiUser "icingaweb2" {
+  password = "{{ icingaWebPassword }}"
+  permissions = [ "status/query", "actions/*", "objects/modify/*", "objects/query/*" ]
+}

@@ -3,3 +3,13 @@
   service:
     name: icinga2
     state: restarted
+
+- name: Restart httpd
+  service:
+    name: httpd
+    state: restarted
+
+- name: Restart php-fpm
+  service:
+    name: rh-php71-php-fpm
+    state: restarted
