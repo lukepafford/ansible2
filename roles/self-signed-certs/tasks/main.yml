@@ -30,7 +30,7 @@
     path: /etc/pki/tls/private/{{ ansible_fqdn }}.pem.key
     size: 4096
     type: RSA
-    mode: 0600
+    mode: 0640
   register: rsaResults
 
 - name: Generate the CSR

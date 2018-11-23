@@ -35,6 +35,15 @@
     group: root
     mode: 0644
 
+- name: Copy system private key to file owned by postgres
+  copy:
+    remote_src: yes
+    src: /etc/pki/tls/private/{{ ansible_fqdn }}.pem.key
+    dest: /etc/pki/tls/private/{{ ansible_fqdn }}.pem.key.postgres
+    owner: postgres
+    group: root
+    mode: 0600
+
 - name: Configure Postgresql
   template: 
     src: '{{ item.src }}'

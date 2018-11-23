@@ -80,12 +80,12 @@ max_connections = {{ maxConnections }}			# (change requires restart)
 # - Security and Authentication -
 
 #authentication_timeout = 1min		# 1s-600s
-#ssl = off				# (change requires restart)
+ssl = on				# (change requires restart)
 #ssl_ciphers = 'ALL:!ADH:!LOW:!EXP:!MD5:@STRENGTH'	# allowed SSL ciphers
 					# (change requires restart)
 #ssl_renegotiation_limit = 0		# amount of data between renegotiations
-#ssl_cert_file = 'server.crt'		# (change requires restart)
-#ssl_key_file = 'server.key'		# (change requires restart)
+ssl_cert_file = '/etc/pki/tls/certs/{{ ansible_fqdn }}.crt'		# (change requires restart)
+ssl_key_file = '/etc/pki/tls/private/{{ ansible_fqdn }}.pem.key.postgres'		# (change requires restart)
 #ssl_ca_file = ''			# (change requires restart)
 #ssl_crl_file = ''			# (change requires restart)
 #password_encryption = on
