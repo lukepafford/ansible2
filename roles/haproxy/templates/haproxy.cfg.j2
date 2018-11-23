@@ -70,6 +70,7 @@ frontend  main
 
     redirect scheme https if !{ ssl_fc }
     use_backend jenkins if { path_beg /jenkins }
+    use_backend icinga if { path_beg /icingaweb2 }
 #    default_backend jenkins
 
 backend jenkins
@@ -77,3 +78,9 @@ backend jenkins
   mode http
   option forwardfor
   reqirep ^([^\ :]*)\ /jenkins/(.*)     \1\ /jenkins/\2
+
+backend icinga
+  server mon-01 192.168.122.120:80 check
+  mode http
+  option forwardfor
+  reqirep ^([^\ :]*)\ /icingaweb2/(.*)     \1\ /icingaweb2/\2
