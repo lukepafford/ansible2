@@ -30,9 +30,39 @@
   command: psql -h 127.0.0.1 -f /tmp/icinga.sql
   become_user: postgres
   when: dbResults.rc == 2
-
+    
 - name: Initialize icinga schema
   command: psql -h 127.0.0.1 -U icinga -d icinga -f /usr/share/icinga2-ido-pgsql/schema/pgsql.sql
   environment:
     PGPASSWORD: '{{ icingaPassword }}'
   when: dbResults.rc == 2
+
+- name: Copy the icingaweb schema to the server
+  copy:
+    src: '{{ item }}'
+    dest: /tmp
+    owner: postgres
+    group: root
+    mode: 0770
+  loop:
+    - pgsql.schema.sql
+    - create-icingaweb.sql
+
+- name: Check if the icingaweb database exists
+  command: psql -h 127.0.0.1 -d icingaweb -c ''
+  become_user: postgres
+  register: webResults
+  changed_when: webResults.rc == 2
+  failed_when: false
+
+- name: Initialize icingaweb database
+  command: psql -h 127.0.0.1 -f /tmp/create-icingaweb.sql
+  become_user: postgres
+  when: webResults.rc == 2
+
+- name: Initialize icinga schema
+  command: psql -h 127.0.0.1 -U icinga -d icingaweb -f /tmp/pgsql.schema.sql
+  environment:
+    PGPASSWORD: '{{ icingaPassword }}'
+  when: webResults.rc == 2
+
