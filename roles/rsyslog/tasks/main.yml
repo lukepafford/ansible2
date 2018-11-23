@@ -7,3 +7,10 @@
     group: root
     mode: 0644
   notify: Restart rsyslog
+
+- name: Configure Selinux to handle remote syslog ports
+  seport:
+    ports: '{{ syslog_port_t }}'
+    proto: tcp
+    setype: syslogd_port_t
+    state: present
