@@ -1,13 +1,13 @@
 Configures Postgresql server
 
-TODO: syslog logs aren't handled properly still
-
 Installs Postgres, initiates the server, configures syslog, enables the firewall, and starts the service.
 Role Features:
   - HBA entries
-  
 
 This role will also execute the SQL file 'configure.sql' if it exists in your roles 'files' directory. This file can be any valid SQL commands to run against the server. I personally use it to configure roles. It's kind of my catch all section for areas where im too lazy to put it in the Ansible role itself.
+
+optional files:
+  - configure.sql
 
 required variabes:
   - dataDir - directory which contains postgresql.conf, and pg_Hba.conf, etc
