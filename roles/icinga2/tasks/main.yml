@@ -108,6 +108,20 @@
     - Restart httpd
     - Restart php-fpm
 
+- name: Configure icingaweb2
+  template:
+    src: '{{ item.src }}'
+    dest: '{{ item.dest }}'
+    owner: apache
+    group: icinga
+    mode: 0660
+  loop:
+    - { src: config.ini.j2, dest: /etc/icingaweb2/config.ini }
+  notify:
+    - Restart httpd
+    - Restart php-fpm
+    - Restart icinga2
+
 - name: Enable and start icinga2 services
   service:
     name: '{{ item }}'
