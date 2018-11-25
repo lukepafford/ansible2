@@ -8,6 +8,3 @@ This is a pretty simple of way of making sure all your hosts trust each other in
 
 Setting up your own CA scales easier, but I like the simplicity of this solution,
 sicne certificates are so critical to configuration, and I want to guarentee its running correctly.
-
-required variables:
-  - email - email address to go onto certificates
