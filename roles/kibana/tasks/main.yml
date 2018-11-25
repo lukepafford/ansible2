@@ -1,0 +1,40 @@
+---
+- name: Install Kibana
+  yum:
+    state: present
+    name: kibana
+  notify: Reload systemd
+
+- name: Kibana doesn't work properly with systemd after initial install. We must reload systemd 
+  meta: flush_handlers
+
+- name: Ensure kibana has write access to kibana log file
+  file:
+    path: /var/log/kibana.log
+    owner: root
+    group: kibana
+    mode: 0660
+
+- name: Configure Kibana
+  template:
+    src: kibana.yml.j2
+    dest: /etc/kibana/kibana.yml
+    owner: root
+    group: kibana
+    mode: 0660
+  notify: Restart kibana
+    
+- name: Configure firewall for Kibana
+  firewalld:
+    port: '{{ item }}'
+    permanent: yes
+    immediate: yes
+    state: enabled
+  loop:
+    - 5601/tcp
+
+- name: Start and enable Kibana
+  service:
+    name: kibana
+    state: started
+    enabled: yes

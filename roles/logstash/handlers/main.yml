@@ -1,0 +1,8 @@
+---
+- name: Generate systemd script
+  command: '{{ logstashHome }}/bin/system-install'
+
+- name: Restart logstash
+  service:
+    name: logstash
+    state: restarted

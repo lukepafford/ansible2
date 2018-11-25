@@ -1,0 +1,4 @@
+Configures logstash
+
+Required Variables:
+  - logstashHome

@@ -1,0 +1,7 @@
+---
+- hosts: log-01
+  roles:
+    - elastic-repository
+    - elasticsearch
+    - kibana
+    - logstash
