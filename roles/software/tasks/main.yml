@@ -8,6 +8,7 @@
       - policycoreutils-python
       - psmisc
       - lsof
+      - htop
     state: present
 
 - name: Install required NPM packages
