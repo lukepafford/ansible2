@@ -75,3 +75,4 @@
     enabled: yes
 
 - include: icinga.yml
+- include: internalConfigure.yml

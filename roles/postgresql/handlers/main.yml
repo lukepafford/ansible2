@@ -8,3 +8,7 @@
   service:
     name: rsyslog
     state: restarted
+
+- name: Run arbitrary SQL commands to configure server
+  command: psql -h 127.0.0.1 -f /tmp/configure.sql
+  become_user: postgres

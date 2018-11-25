@@ -1,0 +1,14 @@
+---
+- name: Check if configure.sql exists
+  local_action: stat path={{ role_path}}/files/configure.sql
+  register: statConfigure
+
+- name: Copy the configure.sql file to the server
+  copy:
+    src: configure.sql
+    dest: /tmp
+    owner: root
+    group: postgres
+    mode: 0640
+  when: statConfigure.stat.exists
+  notify: Run arbitrary SQL commands to configure server
