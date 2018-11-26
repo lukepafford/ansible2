@@ -5,6 +5,7 @@
   roles:
     - domain
     - network
+    - static-hosts
     - repos
     - elastic-repository
     - software
