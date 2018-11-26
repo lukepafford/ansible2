@@ -1,1 +1,5 @@
 Configures basic installation of Kibana
+
+
+Required Variables:
+  - kibanaPrefix - prepended path to each URL. Used for reverse proxies. You should read the kibana.yml config file to understand this setting
