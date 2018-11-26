@@ -50,8 +50,8 @@
     src: haproxy.cfg.j2
     dest: /etc/haproxy/haproxy.cfg
     owner: root
-    group: root
-    mode: 0644
+    group: haproxy
+    mode: 0640
     validate: /sbin/haproxy -f %s -c
   notify: Restart haproxy
   tags: config
