@@ -31,7 +31,7 @@
     immediate: yes
     state: enabled
   loop:
-    - '{{ syslog_port_t }}/tcp
+    - '{{ syslog_port_t }}/tcp'
  
 - name: Configure Logstash pipelines 
   template:
