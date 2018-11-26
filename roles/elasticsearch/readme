@@ -1,1 +1,4 @@
 Configures basic installation of Elasticsearch
+
+Required variables:
+  - clusterName - name of Elasticsearch cluster that all nodes will share

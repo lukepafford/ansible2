@@ -4,6 +4,30 @@
     state: present
     name: elasticsearch
 
+    # Elastic X-Pack does NOT include security until the Gold license. I thought you could at least do basic authentication
+    # but i was wrong. Leaving these settings here in case that ever changes as it took a few hours to work around the issues
+    #
+    #- name: Create PKI directory for elasticsearch since it needs to exist in a place it can read
+    #  file:
+    #    state: directory
+    #    path: /etc/elasticsearch/tls
+    #    owner: elasticsearch
+    #    group: elasticsearch
+    #    mode: 0770
+    #
+    #- name: Copy the system private key for Elasticsearch to read
+    #  copy:
+    #    remote_src: true
+    #    src: '{{ item.src }}'
+    #    dest: '{{ item.dest }}'
+    #    owner: elasticsearch
+    #    group: elasticsearch
+    #    mode: '{{ item.mode }}'
+    #  notify: Restart elasticsearch
+    #  loop: 
+    #    - { src: '{{ sslKey }}', dest: '/etc/elasticsearch/tls/{{ sslKey | basename }}', mode: '0600' }
+    #    - { src: '{{ sslCert }}', dest: '/etc/elasticsearch/tls/{{ sslCert | basename }}', mode: '0644' }
+
 - name: Configure Elasticsearch
   template:
     src: elasticsearch.yml.j2
