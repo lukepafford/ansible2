@@ -2,6 +2,6 @@ Simple rsyslog client configuration.
 Modifies main /etc/rsyslog.conf file.
 Stops local0 from going to /var/log/messages
 
-
 Required Variables:
+  - logServer -  hostname or ip address of the host to send logs to
   - syslog_port_t - tcp port machines should send their logs to
