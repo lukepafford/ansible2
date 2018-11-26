@@ -4,8 +4,9 @@ Expects that the certbot client was used to install certificates onto one of the
 This host must be specified in the variable 'certHost'.
 The certificates will be fetched from that server, and then distributed to all Load balancers.
 
-This role is current unusable for anyone but myself because I have not abstracted
-the haproxy configuration. The template has my values hard coded right now.
+This role is not flexible for HAproxy. It uses a template that meets my needs, but more than likely
+won't meet yours. I would swap out the haproxy.cfg.j2 template with your own
+
 
 Role enables HAProxy stats at url https://load-balancer:443/haproxy?stats
 
@@ -14,3 +15,24 @@ Required Variables:
   - domain
   - statsUser # Stats username and password credentials when prompted for stats
   - statsPass
+  - backends - complex dictionary to describe your routing. Here is what I use as an example:
+
+backends:
+  - jenkins:
+     servers:
+       - name: cicd-01
+         ip: 192.168.122.1
+         port: 8080
+     reqirep: ^([^\ :]*)\ /jenkins/(.*)     \1\ /jenkins/\2
+  - icinga:
+      servers:
+        - name: mon-01
+          ip: 192.168.122.2
+          port: 80
+      reqirep: ^([^\ :]*)\ /icingaweb2/(.*)     \1\ /icingaweb2/\2
+  - kibana:
+      servers:
+        - name: log-01
+          ip: 192.168.122.3
+          port: 5601
+      reqirep: ^([^\ :]*)\ /kibana/(.*)     \1\ /kibana/\2
