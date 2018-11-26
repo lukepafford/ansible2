@@ -1,0 +1,19 @@
+input {
+  tcp {
+    port => 5044
+  }
+}
+
+filter {
+  grok {
+    match => { "message" => "^%{SYSLOGTIMESTAMP:timestamp} %{HOSTNAME:hostname} %{WORD:severity} %{WORD:facility} %{DATA:program}(\[%{NUMBER:pid}\])?: %{DATA:message}$" }
+    overwrite => [ "message" ]
+    add_tag => [ "Linux" ]
+  }
+}
+
+output {
+  elasticsearch {
+        hosts => [ "localhost:9200" ]
+  }
+}

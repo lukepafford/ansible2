@@ -1,4 +1,5 @@
 Configures logstash
 
 Required Variables:
-  - logstashHome
+  - logstashHome - path to logstash installation that contains bin directory
+  - syslog_port_t - tcp port to collect logs on. 

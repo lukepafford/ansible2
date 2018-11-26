@@ -31,7 +31,18 @@
     immediate: yes
     state: enabled
   loop:
-    - 514/tcp
+    - '{{ syslog_port_t }}/tcp
+ 
+- name: Configure Logstash pipelines 
+  template:
+    src: '{{ item.src }}'
+    dest: '{{ item.dest }}'
+    owner: root
+    group: logstash
+    mode: 0640
+    validate: /usr/share/logstash/bin/logstash --log.level=debug --config.test_and_exit --path.config %s
+  loop:
+    - { src: 'main.conf.j2', dest: '/etc/logstash/conf.d/main.conf' }
 
 - name: Start and enable Logstash
   service:
