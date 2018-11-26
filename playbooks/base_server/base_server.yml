@@ -6,6 +6,7 @@
     - domain
     - network
     - repos
+    - elastic-repository
     - software
     - sudoers
     - self-signed-certs
