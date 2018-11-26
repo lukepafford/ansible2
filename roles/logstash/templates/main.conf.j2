@@ -10,6 +10,14 @@ filter {
     overwrite => [ "message" ]
     add_tag => [ "Linux" ]
   }
+
+  mutate {
+    split => ["hostname", "."]
+  }
+
+  mutate {
+    replace => ["hostname", "%{[hostname][0]}"]
+  }
 }
 
 output {
