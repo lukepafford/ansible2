@@ -72,13 +72,24 @@ frontend  main
 
 {% for backend in backends %}
   {% for key, value in backend.items() %}
-    use_backend {{ key }} if { path_beg /{{ key }} }
+   use_backend {{ key }} if { path_beg /{{ key }} }
   {% endfor %}
 {% endfor %}
+
+    userlist users
+{% for user in users %}
+      user {{ user.username }} insecure-password {{ user.password }}
+{% endfor %}
+
+# Configure backends
 
 {% for backend in backends %}
 {% for key, value in backend.items() %}
 backend {{ key }}
+{% if value.authRequired %}
+  acl kibanaAuth http_auth(users)
+  http-request auth realm kibana if !kibanaAuth
+{% endif %}
 {% for server in value.servers %}
   server {{ server.name }} {{ server.ip }}:{{ server.port }} check
 {% endfor %}

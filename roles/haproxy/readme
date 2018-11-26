@@ -15,8 +15,14 @@ Required Variables:
   - domain
   - statsUser # Stats username and password credentials when prompted for stats
   - statsPass
+  - users - Single Haroxy user list
   - backends - complex dictionary to describe your routing. Here is what I use as an example:
 
+users:
+  - username: user1
+    password: hello
+  - username: user2
+    password: hi
 backends:
   - jenkins:
      servers:
@@ -24,15 +30,18 @@ backends:
          ip: 192.168.122.1
          port: 8080
      reqirep: ^([^\ :]*)\ /jenkins/(.*)     \1\ /jenkins/\2
+     authRequired: false
   - icinga:
       servers:
         - name: mon-01
           ip: 192.168.122.2
           port: 80
       reqirep: ^([^\ :]*)\ /icingaweb2/(.*)     \1\ /icingaweb2/\2
+      authRequired: false
   - kibana:
       servers:
         - name: log-01
           ip: 192.168.122.3
           port: 5601
       reqirep: ^([^\ :]*)\ /kibana/(.*)     \1\ /kibana/\2
+      authRequired: true
