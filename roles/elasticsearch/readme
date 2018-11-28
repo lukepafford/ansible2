@@ -1,4 +1,7 @@
 Configures basic installation of Elasticsearch
 
+WARNING this role currently lets any host on the internal network connect to its port.
+I plan on adding firewall rules to specify specific hosts it should allow in firewalld
+
 Required variables:
   - clusterName - name of Elasticsearch cluster that all nodes will share
