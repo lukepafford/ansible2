@@ -22,6 +22,6 @@ filter {
 
 output {
   elasticsearch {
-        hosts => [ "localhost:9200" ]
+        hosts => [ "http://{{ ansible_default_ipv4.address }}:9200" ]
   }
 }

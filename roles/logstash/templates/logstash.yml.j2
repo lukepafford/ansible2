@@ -219,7 +219,7 @@ path.logs: /var/log/logstash
 xpack.monitoring.enabled: true
 #xpack.monitoring.elasticsearch.username: logstash_system
 #xpack.monitoring.elasticsearch.password: password
-xpack.monitoring.elasticsearch.url: [ "http://127.0.0.1:9200" ]
+xpack.monitoring.elasticsearch.url: [ "http://{{ ansible_default_ipv4.address }}:9200" ]
 #xpack.monitoring.elasticsearch.ssl.ca: [ "/path/to/ca.crt" ]
 #xpack.monitoring.elasticsearch.ssl.truststore.path: path/to/file
 #xpack.monitoring.elasticsearch.ssl.truststore.password: password
