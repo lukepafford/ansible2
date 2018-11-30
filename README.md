@@ -2,6 +2,7 @@
 New repository for my Ansible roles
 
 # Repository Conventions
+ This document follows patterns from the [Ansible best practices document](https://docs.ansible.com/ansible/latest/user_guide/playbooks_best_practices.html) and [This great post by Michel Blanc](https://leucos.github.io/ansible-files-layout)
 
 ## Pending documented processes
  * Dealing with conflicting, and legacy roles
@@ -106,7 +107,7 @@ New repository for my Ansible roles
   Steps to perform when adding or removing a host
   
 ### Host creation
- Add the host to the Ansible inventory, and appropriate `host_vars` and `group-vars`
+ Add the host to the Ansible inventory, and appropriate `host_vars` and `group_vars`
  
 #### Linux Hosts
   * Specify the bootproto variable
