@@ -1,5 +1,4 @@
 ---
-- name: 'Set the hostname with the correct domain if there is a mismatch'
-  hostname:
-    name: '{{ ansible_hostname }}.{{ domain }}'
-  when: domain != ansible_domain
+- import_tasks: domain.yml
+  tags: 
+    - domain

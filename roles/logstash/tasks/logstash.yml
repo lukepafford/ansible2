@@ -1,0 +1,51 @@
+---
+- name: Install Logstash
+  yum:
+    state: present
+    name: logstash
+
+- name: Configure Logstash
+  template:
+    src: logstash.yml.j2
+    dest: /etc/logstash/logstash.yml
+    owner: root
+    group: logstash
+    mode: 0644
+  notify: Restart logstash
+
+- name: Configure startup options
+  template:
+    src: startup.options.j2
+    dest: /etc/logstash/startup.options
+    owner: root
+    group: logstash
+    mode: 0600
+  notify: 
+    - Generate systemd script
+    - Restart logstash
+
+- name: Configure firewall for Logstash
+  firewalld:
+    port: '{{ item }}'
+    permanent: yes
+    immediate: yes
+    state: enabled
+  loop:
+    - '{{ syslog_port_t }}/tcp'
+ 
+- name: Configure Logstash pipelines 
+  template:
+    src: '{{ item.src }}'
+    dest: '{{ item.dest }}'
+    owner: root
+    group: logstash
+    mode: 0640
+    validate: /usr/share/logstash/bin/logstash --log.level=debug --config.test_and_exit --path.config %s
+  loop:
+    - { src: 'main.conf.j2', dest: '/etc/logstash/conf.d/main.conf' }
+
+- name: Start and enable Logstash
+  service:
+    name: logstash
+    state: started
+    enabled: yes

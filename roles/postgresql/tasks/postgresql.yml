@@ -1,0 +1,78 @@
+---
+- name: Install Postgresql
+  yum:
+    name: postgresql-server
+    state: present
+
+- name: Run Postgresql-Setup
+  command: postgresql-setup initdb
+  args:
+    creates: /var/lib/pgsql/data/pg_hba.conf
+
+- name: Create log directory
+  file:
+    path: /var/log/postgresql
+    owner: postgres
+    group: postgres
+    mode: 0770
+    state: directory
+  notify: Restart postgresql
+
+- name: Configure rsyslog for postgresql
+  copy:
+    src: postgresql-log.conf
+    dest: /etc/rsyslog.d/postgresql.conf
+    owner: root
+    group: root
+    mode: 0644
+  notify: Restart rsyslog
+
+- name: Configure logrotations for postgresql
+  copy:
+    src: postgresql.rotate
+    dest: /etc/logrotate.d/postgresql
+    owner: root
+    group: root
+    mode: 0644
+
+- name: Copy system private key to file owned by postgres
+  copy:
+    remote_src: yes
+    src: /etc/pki/tls/private/{{ ansible_fqdn }}.pem.key
+    dest: /etc/pki/tls/private/{{ ansible_fqdn }}.pem.key.postgres
+    owner: postgres
+    group: root
+    mode: 0600
+
+- name: Configure Postgresql
+  template: 
+    src: '{{ item.src }}'
+    dest: '{{ dataDir }}/{{ item.dest }}'
+    owner: postgres
+    group: postgres
+    mode: 0600
+  loop:
+    - { src: 'postgresql.conf.j2', dest: 'postgresql.conf' }
+    - { src: 'pg_hba.conf.j2', dest: 'pg_hba.conf' }
+    - { src: 'pg_ident.conf.j2', dest: 'pg_ident.conf' }
+  notify: Restart postgresql
+  tags: config
+
+- name: Flush handlers so HBA changes can be made before proceeding
+  meta: flush_handlers
+
+- name: Configure firewall to allow postgresql
+  firewalld:
+    port: 5432/tcp
+    permanent: yes
+    state: enabled
+    immediate: true
+
+- name: Start and enable Postgresql
+  service:
+    name: postgresql
+    state: started
+    enabled: yes
+
+- include: icinga.yml
+- include: internalConfigure.yml

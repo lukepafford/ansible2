@@ -1,0 +1,8 @@
+---
+- name: Configure Sudoers
+  copy:
+    src: sudoers
+    dest: /etc
+    owner: root
+    group: root
+    mode: 0440

@@ -1,0 +1,64 @@
+---
+- name: Remove old, or invalid repo files
+  file:
+    path: /etc/yum.repos.d/{{ item }}
+    state: absent
+  loop: '{{ invalidRepos }}'
+  when: invalidRepos is defined
+
+- name: Check if centos-release is installed properly
+  command: rpm --verify centos-release
+  register: repoStatus
+  failed_when: false
+  changed_when: false
+
+- name: Remove centos-release, find the latest version, and install it
+  block:
+    - command: rpm --erase --nodeps centos-release
+      when: repoStatus.stdout.find('missing') != -1
+    - script: latest-centos-release-url.js
+      environment:
+        NODE_PATH: '{{ role_path }}/files/node_modules'
+      delegate_to: 127.0.0.1
+      register: centosReleaseUrl
+    - yum:
+       name: '{{ centosReleaseUrl.stdout | trim }}'
+       state: present
+  when: repoStatus.rc == 1
+
+- name: Check if epel-release is installed properly
+  command: rpm --verify epel-release
+  register: epelStatus
+  failed_when: false
+  changed_when: false
+
+- name: Uninstall the epel repository if the installation is corrupt
+  yum:
+    name: epel-release
+    state: removed
+  when: epelStatus.stdout.find('missing') != -1
+
+- name: Intall repositories packaged as RPMs
+  yum:
+    name: epel-release
+    state: 'present'
+
+- name: Install required GPG keys
+  copy:
+    src: '{{ item }}'
+    dest: /etc/pki/rpm-gpg
+    owner: root
+    group: root
+    mode: 0644
+  loop:
+    - NODESOURCE-GPG-SIGNING-KEY-EL
+    
+- name: Configure known repo files
+  copy:
+    src: '{{ item }}'
+    dest: /etc/yum.repos.d
+    owner: root
+    group: root
+    mode: 0644
+  loop:
+    - nodesource-el7.repo

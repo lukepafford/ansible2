@@ -1,0 +1,45 @@
+---
+- name: Install Jenkins public key
+  copy:
+    src: jenkins.io.key
+    dest: /etc/pki/rpm-gpg
+    owner: root
+    group:
+    mode: 0644
+
+- name: Configure Jenkins repo
+  copy:
+    src: jenkins.repo
+    dest: /etc/yum.repos.d
+    owner: root
+    group: root
+    mode: 0644
+
+- name: Configure Jenkins startup options
+  copy:
+    src: jenkins
+    dest: /etc/sysconfig
+    owner: root
+    group: root
+    mode: 0600
+  notify: Restart jenkins
+
+- name: Install Jenkins
+  yum:
+    name: 
+      - java-1.8.0-openjdk
+      - jenkins
+    state: present
+
+- name: Configure firewalld for Jenkins
+  firewalld:
+    port: 8080/tcp
+    permanent: yes
+    state: enabled
+    immediate: yes
+
+- name: Start and enable Jenkins
+  service:
+    name: jenkins
+    state: started
+    enabled: yes

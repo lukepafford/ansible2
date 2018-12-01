@@ -1,20 +1,4 @@
 ---
-- name: Install required packages
-  yum:
-    name:
-      - vim
-      - git
-      - nodejs
-      - policycoreutils-python
-      - psmisc
-      - lsof
-      - htop
-    state: present
-
-- name: Install required NPM packages
-  npm:
-    name: '{{ item }}'
-    global: yes
-  loop:
-    - axios
-    - htmlparser2
+- import_tasks: software.yml
+  tags:
+    - software

@@ -1,20 +1,4 @@
 ---
-- name: Install keepalived
-  yum:
-    name: keepalived
-    state: present
-
-- name: Configure HAProxy
-  template:
-    src: keepalived.conf.j2
-    dest: /etc/keepalived/keepalived.conf
-    owner: root
-    group: root
-    mode: 0644
-  notify: Restart keepalived
-
-- name: Enable and start keepalived
-  service:
-    name: keepalived
-    state: restarted
-    enabled: yes
+- import_tasks: keepalived.yml
+  tags:
+    - keepalived
