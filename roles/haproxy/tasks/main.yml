@@ -4,7 +4,7 @@
     name: 
       - haproxy
       - certbot
-    state: latest
+    state: present
 
 - name: Configure firewalld for haproxy
   firewalld: 
