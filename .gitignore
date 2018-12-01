@@ -11,6 +11,7 @@ package-lock.json
 update-hosts.sh
 get-kvm-hosts.sh
 configure.sql
+kvmHosts
 defaults/
 certs/
 vars/

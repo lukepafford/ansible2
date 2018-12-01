@@ -1,0 +1,6 @@
+---
+- import_playbook: playbooks/base_server/base_server.yml
+- import_playbook: playbooks/load-balanced-proxy/main.yml
+- import_playbook: playbooks/elastic/main.yml
+- import_playbook: playbooks/postgresql/main.yml
+- import_playbook: playbooks/icinga2/main.yml
