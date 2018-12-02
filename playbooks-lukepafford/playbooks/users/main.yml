@@ -1,0 +1,4 @@
+---
+- hosts: cicd-01
+  roles:
+    - users

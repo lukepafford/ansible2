@@ -1,0 +1,17 @@
+---
+- name: Generate groups
+  group:
+    state: '{{ item.state }}'
+    name: '{{ item.name }}'
+  loop: '{{ _groups }}'
+
+- name: Generate system users
+  user:
+    state: '{{ item.state }}'
+    name: '{{ item.name }}'
+    generate_ssh_key: '{{ item.generate_ssh_key }}'
+    shell: '{{ item.shell }}'
+    system: '{{ item.system }}'
+    groups: '{{ item.groups }}'
+    append: '{{ item.append }}'
+  loop: '{{ users }}'
