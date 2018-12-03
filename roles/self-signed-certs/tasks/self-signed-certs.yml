@@ -6,7 +6,7 @@
 
 - name: Make sure the pyOpenSSL used is from pip, not Rpms
   yum:
-    name: pyOpenSSL
+    name: pyOpenSSL>18.0.0
     state: absent
 
 - name: Install latest version of pyOpenSSL with pip
