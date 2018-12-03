@@ -124,6 +124,10 @@ New repository for my Ansible roles
   
     your choices are [ 'smart', 'explicit', 'implicit'] (default: implicit)
 
+    This is so facts aren't gathered for each and every play, and it wastes a lot of time
+
+    if you just want to run a small fraction of your playbook
+
 # WARNING
  I run Centos7 on all my servers, and my roles reflect this for simplicity.
 Running a different OS likely means you'll run into problems. ex - The repos role
