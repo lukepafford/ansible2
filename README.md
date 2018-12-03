@@ -115,6 +115,15 @@ New repository for my Ansible roles
     - Set the ipv4 variable
     - Ensure the host has a DNS entry
 
+## Tips
+  * If you use a lot of tags to limit what your playbook runs, then you will want to have the config setting
+
+    ```gathering = smart```
+  
+    or set the ansible environment variable **ANSIBLE_GATHERING**
+  
+    your choices are [ 'smart', 'explicit', 'implicit'] (default: implicit)
+
 # WARNING
  I run Centos7 on all my servers, and my roles reflect this for simplicity.
 Running a different OS likely means you'll run into problems. ex - The repos role
