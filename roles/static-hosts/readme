@@ -1,6 +1,6 @@
 configures /etc/hosts with all the host definitions in our inventory.
 
-All hosts MUST have an ip variablein host_vars
+All hosts MUST have an ip variable in host_vars
 
 Required variables:
   - ip - ip address of the host entry
