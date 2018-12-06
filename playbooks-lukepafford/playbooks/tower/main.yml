@@ -1,0 +1,4 @@
+---
+- hosts: tower-01
+  roles:
+    - docker-ce

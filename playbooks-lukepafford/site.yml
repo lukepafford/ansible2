@@ -4,4 +4,5 @@
 - import_playbook: playbooks/elastic/main.yml
 - import_playbook: playbooks/postgresql/main.yml
 - import_playbook: playbooks/icinga2/main.yml
+- import_playbook: playbooks/tower/main.yml
 - import_playbook: playbooks/users/main.yml
