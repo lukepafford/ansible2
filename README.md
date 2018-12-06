@@ -27,16 +27,20 @@ New repository for my Ansible roles
     inventories/
       development/
         group_vars/
-          all
-        group01/
-          vars
-          vault
-       production/
-         group_vars/
-           all
-         group02/
+          all/
            vars
            vault
+          group01/
+            vars
+            vault
+       production/
+         group_vars/
+           all/
+             vars
+             vault
+           group02/
+             vars
+             vault
      site.yml
      playbooks/
        base.yml
