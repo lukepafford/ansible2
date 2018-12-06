@@ -16,6 +16,7 @@
   get_url:
     url: https://download.docker.com/linux/centos/docker-ce.repo
     dest: /etc/yum.repos.d/docker-ce.repo
+    checksum: 'sha256:6650718e0fe5202ae7618521f695d43a8bc051c539d7570f0edbfa5b4916f218'
 
 - name: Install Docker and pre-req packages
   yum:
