@@ -27,6 +27,20 @@
       - docker-ce
     state: present
 
+- name: Create the docker group
+  group:
+    name: docker
+    state: present
+
+- name: Add users to the docker group
+  user:
+    state: present
+    name: '{{ item }}'
+    groups: docker
+    append: yes
+  with_items: '{{ docker_ce_admins }}'
+  when: docker_ce_admins
+
 - name: Start and enable the docker service
   service:
     name: docker
