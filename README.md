@@ -68,7 +68,20 @@ New repository for my Ansible roles
    
    * All roles must have a README.md. Go into detail of what the role does if it isn't obvious
    
-   * **ALL_VARIABLES** used in the role must be defined in `defaults/main.yml`.
+   * **ALL_VARIABLES** used in the role must be defined in `defaults/main.yml`,
+			 and documented in the `README.md` page for the role. The documentation
+			 will adhere to the following YAML structure:
+
+			 ```
+			 variables:
+			   - name: role_name_variable_name
+				 	 required: boolean
+					 type: (int, str, list, dict)
+					 default: default_value
+					 description: string description for the purpose of the variable
+				- name: role_name_second_variable
+				  ...
+			```
    
      This is the most **critical** step for role consistency
      
