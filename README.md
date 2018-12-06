@@ -72,16 +72,16 @@ New repository for my Ansible roles
 			 and documented in the `README.md` page for the role. The documentation
 			 will adhere to the following YAML structure:
 
-			 ```
-			 variables:
-			   - name: role_name_variable_name
-				 	 required: boolean
-					 type: (int, str, list, dict)
-					 default: default_value
-					 description: string description for the purpose of the variable
-				- name: role_name_second_variable
-				  ...
-			```
+	 ```
+	 variables:
+	   - name: role_name_variable_name
+		 	 required: boolean
+			 type: (int, str, list, dict)
+			 default: default_value
+			 description: string description for the purpose of the variable
+		- name: role_name_second_variable
+		  ...
+		```
    
      This is the most **critical** step for role consistency
      
