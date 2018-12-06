@@ -1,6 +1,12 @@
 # ansible2
 New repository for my Ansible roles
 
+# ABOUT
+I've gotten better with Ansible, and scripting, and wanted to redo a lot of functionality. A lot of previous roles didn't consistently abstract the data through templates, making them pretty useless.
+Rather then fix my git repo (lukepafford-ansible), I'm just pushing everything to this new one. 
+
+Feel free to use any roles in here if they look like something you need. I'm going to try and make sure each role has a *readme* specifying what variables need to be provided
+
 # Repository Conventions
  This document follows patterns from the [Ansible best practices document](https://docs.ansible.com/ansible/latest/user_guide/playbooks_best_practices.html) and [This great post by Michel Blanc](https://leucos.github.io/ansible-files-layout)
 
@@ -11,11 +17,14 @@ New repository for my Ansible roles
    (e.g Java applications that are configured through the web interface)
    
 ## Variables
-  * Site wide variables (domain, realm) should all exist in `group_vars/all`
+  * Site wide variables (domain, realm) should all exist in
+			`group_vars/all/{vars, vault}`
   
-  * Unique variables (ip address) should exist in `host_vars`
+  * Unique variables (ip address) should exist in 
+	  `host_vars/host_name/{vars, vault}`
   
-  * Role variables should be defined by groups in `group_vars/group`
+  * Role variables should be defined by groups in 
+		`group_vars/group/{vars, vault}`
   
   See the 'Secrets' section for how to handle encrypted values
   
@@ -149,12 +158,6 @@ New repository for my Ansible roles
  I run Centos7 on all my servers, and my roles reflect this for simplicity.
 Running a different OS likely means you'll run into problems. ex - The repos role
 pulls down the "el7" repos for Enterprise Linux
-
-# ABOUT
-I've gotten better with Ansible, and scripting, and wanted to redo a lot of functionality. A lot of previous roles didn't consistently abstract the data through templates, making them pretty useless.
-Rather then fix my git repo (lukepafford-ansible), I'm just pushing everything to this new one. 
-
-Feel free to use any roles in here if they look like something you need. I'm going to try and make sure each role has a *readme* specifying what variables need to be provided
 
 # CODEBASE
 Custom scripts used in roles will primarily consist of Bash, Python, and NodeJS
