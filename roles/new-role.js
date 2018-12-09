@@ -49,4 +49,5 @@ fs.ensureDir(roleName)
 		.catch( (err) => console.error(err));
 	})
 })
+.then( () => fs.writeFile(path.join(roleName, 'tasks', `${roleName}.yml`), '---', 'utf-8'))
 .catch( (err) => console.error(err));
