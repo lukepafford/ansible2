@@ -1,0 +1,54 @@
+---
+- name: Install prereq packages
+  yum:
+    name:
+      - java-1.8.0-openjdk
+    state: present
+
+- name: Create the nexus user
+  user:
+    state: present
+    name: nexus
+    shell: /bin/bash
+
+- name: Download the Nexus3 software
+  get_url:
+    url: '{{ nexus3_downloadUrl }}'
+    dest: '{{ nexus3_downloadDir }}'
+    checksum: '{{ nexus3_downloadChecksum }}'
+  register: nexusDownload
+
+- name: Create the Nexus3 installation directory
+  file:
+    state: directory
+    path: '{{ nexus3_installDir }}'
+    owner: root
+    group: nexus
+    mode: 02770
+
+- name: Unarchive Nexus3
+  unarchive:
+    remote_src: yes
+    src: '{{ nexusDownload.dest }}'
+    dest: '{{ nexus3_installDir }}'
+
+- name: Find the nexus binary
+  command: find {{ nexus3_installDir }} -path '*bin/nexus'
+  changed_when: false
+  register: nexusBinary
+
+- name: Render the systemd file
+  template:
+    src: nexus.service.j2
+    dest: /etc/systemd/system/nexus.service
+    owner: root
+    group: root
+    mode: 0644
+  notify:
+    - Reload systemd
+
+- name: Start and enable Nexus
+  service:
+    name: nexus
+    state: started
+    enabled: yes
