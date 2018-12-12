@@ -2,6 +2,7 @@
 - name: Install prereq packages
   yum:
     name:
+      - acl
       - java-1.8.0-openjdk
     state: present
 
@@ -24,13 +25,15 @@
     path: '{{ nexus3_installDir }}'
     owner: root
     group: nexus
-    mode: 02770
+    mode: 0770
 
 - name: Unarchive Nexus3
   unarchive:
     remote_src: yes
     src: '{{ nexusDownload.dest }}'
     dest: '{{ nexus3_installDir }}'
+    owner: root
+    group: nexus
 
 - name: Find the nexus binary
   command: find {{ nexus3_installDir }} -path '*bin/nexus'
@@ -46,6 +49,14 @@
     mode: 0644
   notify:
     - Reload systemd
+
+- name: Set proper permissions on Nexus directory
+  file:
+    path: '{{ nexus3_installDir }}'
+    owner: root
+    group: nexus
+    mode: u=rwX,g=rwX,o=rX
+    recurse: yes
 
 - name: Start and enable Nexus
   service:
