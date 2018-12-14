@@ -1,5 +1,5 @@
 ---
-- hosts: proxyServers
+- hosts: proxy
   roles:
     - haproxy
     - keepalived
