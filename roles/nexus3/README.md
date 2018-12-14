@@ -30,6 +30,12 @@ variables:
 		required: no
 		default: /opt/nexus
 		description: Directory to install nexus3
+
+	- name: nexus3_port
+		type: int
+		required: no
+		default: 8081
+		description: TCP port for the application to listen on
 ```
 
 License

@@ -58,6 +58,22 @@
     mode: u=rwX,g=rwX,o=rX
     recurse: yes
 
+- name: Enable firewall
+  firewalld:
+    port: '{{ nexus3_port }}/tcp'
+    immediate: true
+    permanent: true
+    state: enabled
+
+- name: Configure nexus
+  template:
+    src: nexus.properties.j2
+    dest: '{{ nexus3_installDir }}/sonatype-work/nexus3/etc/nexus.properties'
+    owner: root
+    group: nexus
+    mode: 0664
+  notify: Restart nexus
+
 - name: Start and enable Nexus
   service:
     name: nexus
