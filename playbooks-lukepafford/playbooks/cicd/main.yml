@@ -1,4 +1,6 @@
----
 - hosts: cicd
   roles:
     - jenkins
+    - deploy_key
+  tags:
+    - cicd

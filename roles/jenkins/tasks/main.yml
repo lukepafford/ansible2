@@ -1,4 +1,4 @@
 ---
-- import_tasks: jenkins.ymlm
+- import_tasks: jenkins.yml
   tags:
     - jenkins

@@ -1,0 +1,4 @@
+---
+- import_tasks: deploy_key.yml
+  tags:
+    - deploy_key

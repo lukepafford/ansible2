@@ -1,0 +1,15 @@
+---
+- name: Create the deploy account
+  user:
+    name: '{{ deploy_key_account }}'
+    generate_ssh_key: true
+  register: userInfo
+
+- name: Generate the Github deploy key
+  github_deploy_key:
+    key: '{{ userInfo.ssh_public_key }}'
+    owner: '{{ deploy_key_owner }}'
+    repository: '{{ deploy_key_repository }}'
+    name: '{{ deploy_key_name }}'
+    token: '{{ deploy_key_token }}'
+    state: present
