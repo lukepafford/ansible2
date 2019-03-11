@@ -1,0 +1,29 @@
+---
+- name: Install mongodb
+  yum:
+    name: '{{ mongodb_sclVersion }}-mongodb-server'
+    state: present
+
+- name: Configure mongodb
+  template:
+    src: mongod.conf
+    dest: /etc/opt/rh/{{ mongodb_sclVersion }}
+    owner: root
+    group: root
+    mode: 0644
+  notify: 
+    - Create the SSL PEM file
+    - Restrict PEM file
+    - Restart mongodb
+
+- name: Install mongodb shortcuts
+  template:
+    src: mongo-shortcuts.sh
+    dest: /etc/profile.d
+
+- name: Configure the firewall
+  firewalld:
+    port: '{{ mongodb_port }}/tcp'
+    immediate: true
+    state: enabled
+    permanent: true

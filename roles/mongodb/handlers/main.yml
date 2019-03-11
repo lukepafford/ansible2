@@ -1,0 +1,16 @@
+---
+- name: Create the SSL PEM file
+  shell: cat {{ mongodb_sslCert }} {{ mongodb_sslKey }} > {{ mongodb_sslPem }}
+
+- name: Restrict PEM file
+  file:
+    path: '{{ mongodb_sslPem }}'
+    owner: mongodb
+    group: mongodb
+    mode: 0640
+
+- name: Restart mongodb
+  service:
+    name: '{{ mongodb_sclVersion }}-mongod'
+    state: restarted
+    enabled: yes

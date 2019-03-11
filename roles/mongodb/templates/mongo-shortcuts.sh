@@ -1,0 +1,5 @@
+alias mongo-status="systemctl status {{ mongodb_sclVersion }}-mongod"
+alias mongo-restart="sudo systemctl restart {{ mongodb_sclVersion }}-mongod"
+alias mongo-log="cd /var/opt/rh/{{ mongodb_sclVersion }}/log/mongodb && ls -l"
+alias mongo-tail-log="tail -f /var/opt/rh/{{ mongodb_sclVersion }}/log/mongodb/mongod.log"
+alias mongo-conf="cd /etc/opt/rh/{{ mongodb_sclVersion }} && sudo $EDITOR mongod.conf"

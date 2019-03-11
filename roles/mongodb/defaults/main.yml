@@ -1,0 +1,4 @@
+---
+mongodb_sclVersion: rh-mongodb36
+mongodb_port: 27017
+mongodb_sslTrust: /etc/pki/tls/cert.pem
