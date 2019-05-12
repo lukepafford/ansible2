@@ -1,0 +1,47 @@
+---
+- name: Install Nginx
+  yum:
+    name: nginx
+    state: present
+
+- name: Open up the firewall for HTTPS, and HTTP
+  firewalld:
+    permanent: true
+    state: enabled
+    service:  '{{ item }}'
+    immediate: true
+  loop:
+    - https
+    - http
+
+- name: Create the Nginx root and cache directory
+  file:
+    path: '{{ item }}'
+    owner: nginx
+    group: root
+    mode: 0700
+    state: directory
+  loop:
+    - '{{ nginx_server_cachePath }}'
+    - '{{ nginx_server_rootDir }}'
+
+- name: Set the selinux context on the root directory
+  sefcontext:
+    target: '{{ nginx_server_rootDir }}(/.*)?'
+    setype: httpd_sys_content_t
+    state: present
+
+- name: Configure Nginx
+  template:
+    src: nginx.conf
+    dest: /etc/nginx/nginx.conf
+    owner: root
+    group: root
+    mode: 0644
+  notify: Restart nginx
+
+- name: Start and enable nginx service
+  service:  
+    name: nginx
+    enabled: true
+    state: started
