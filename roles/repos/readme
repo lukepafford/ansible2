@@ -1,16 +1,7 @@
-Ensures that the system has required repos installed.
-
-This is a complex role. You will probably want to view the actuall tasks to get a better idea of whats executing.
-
-The role requires the 'axios' and 'htmlparser2' modules be installed in the role_path/files directory.
-The role checks that centos-release is installed properly. If it is missing repo files it will remove
-the package. Unfortunately, we cant just run 'yum install centos-releaes' because now we have no repo files pointing anywhere.
-We must then run a script pointing to the Centos repos. We will parse the package names, and get the URL of the latest centos-release package. We will then install that package
-
 The following repositories will be installed:
   - centos-release
   - epel-release
   - nodesource
 
 Role Variables:
-  invalidRepos: list of filenames that should not exist in /etc/yum.repos.d
+  repos_releases - list of releases to install (default centos-release, and epel-release)

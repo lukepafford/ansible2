@@ -1,14 +1,12 @@
 ---
-- hosts: all
+- hosts: cdn  
+  vars:
+    become: true
   environment:
     NODE_PATH: '/usr/lib/node_modules'
   roles:
-    - domain
-    - network
-    - static-hosts
-    - repos
-    - elastic-repository
-    - software
     - sudoers
-    - self-signed-certs
-    - rsyslog
+    - repos
+    - software
+    - static-hosts
+    - domain

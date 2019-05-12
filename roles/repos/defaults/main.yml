@@ -1,0 +1,4 @@
+---
+repos_releases:
+  - centos-release
+  - epel-release

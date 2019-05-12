@@ -1,0 +1,14 @@
+- name: Install the repository
+  yum:
+    name: '{{ item }}'
+    state: present
+
+- name: Check if {{ item }} is installed properly
+  command: rpm --verify  {{ item }
+  register: repoStatus
+  failed_when: false
+  changed_when: false
+
+- name: Reinstall the repo file
+  command: yum -y reinstall {{ item }}
+  when: repoStatus.rc == 1

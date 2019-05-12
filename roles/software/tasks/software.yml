@@ -9,10 +9,6 @@
       - psmisc
       - lsof
       - htop
-      - auditbeat
-      - heartbeat-elastic
-      - metricbeat
-      - packetbeat
     state: present
 
 - name: Install required NPM packages
