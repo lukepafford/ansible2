@@ -1,7 +1,6 @@
 ---
-- hosts: cdn  
-  vars:
-    become: true
+- hosts: linux
+  become: True
   environment:
     NODE_PATH: '/usr/lib/node_modules'
   roles:

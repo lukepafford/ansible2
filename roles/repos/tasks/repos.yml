@@ -1,5 +1,5 @@
 ---
-- import_tasks: install_repo.yml
+- include_tasks: install_repo.yml
   loop: '{{ repos_releases }}'
 
 - name: Install required GPG keys
