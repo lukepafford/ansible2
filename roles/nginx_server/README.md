@@ -3,6 +3,8 @@ nginx_server
 
 nginx_server
 
+Assumes you have created a TLS certificate with LetsEncrypt using the certbot utility and provided the hosts domain name
+
 Requirements
 ------------
 

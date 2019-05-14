@@ -1,7 +1,9 @@
 ---
 - name: Install Nginx
   yum:
-    name: nginx
+    name: 
+      - nginx
+      - python2-certbot-nginx
     state: present
 
 - name: Open up the firewall for HTTPS, and HTTP
