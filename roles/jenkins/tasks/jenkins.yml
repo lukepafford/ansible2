@@ -1,16 +1,13 @@
 ---
 - name: Install Jenkins public key
-  copy:
-    src: jenkins.io.key
-    dest: /etc/pki/rpm-gpg
-    owner: root
-    group:
-    mode: 0644
+  rpm_key:
+    state: present
+    key: https://pkg.jenkins.io/redhat-stable/jenkins.io.key
 
 - name: Configure Jenkins repo
-  copy:
-    src: jenkins.repo
-    dest: /etc/yum.repos.d
+  get_url:
+    url: https://pkg.jenkins.io/redhat-stable/jenkins.repo
+    dest: /etc/yum.repos.d/jenkins.repo
     owner: root
     group: root
     mode: 0644
@@ -23,6 +20,15 @@
     group: root
     mode: 0600
   notify: Restart jenkins
+
+- name: Ensure certain Jenkins directories exist due to bug in Jenkins RPM
+  file:
+    state: directory
+    path: '{{ item }}'
+  loop:
+    - /var/cache/jenkins
+    - /var/log/jenkins
+    - /var/lib/jenkins
 
 - name: Install Jenkins
   yum:
