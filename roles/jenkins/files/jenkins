@@ -142,3 +142,5 @@ JENKINS_HANDLER_IDLE="20"
 # Full option list: java -jar jenkins.war --help
 #
 JENKINS_ARGS="--prefix=/jenkins"
+
+JAVA_ARGS="-Xmx1500m" 
