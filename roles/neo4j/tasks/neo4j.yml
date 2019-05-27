@@ -1,0 +1,56 @@
+---
+- name: Install Neo4j GPG key
+  rpm_key:
+    state: present
+    key: http://debian.neo4j.org/neotechnology.gpg.key
+
+- name: Install the Neo4j repo file
+  copy:
+    src: neo4j.repo
+    dest: /etc/yum.repos.d
+    owner: root
+    group: root
+    mode: 0644
+
+- name: Install Neo4j
+  yum:
+    state: present
+    name: neo4j
+
+- name: Copy system certs to Neo4j cert location
+  copy:
+    remote_src: true
+    src: '{{ item.src }}'
+    dest: /var/lib/neo4j/certificates/{{ item.dest }}
+    owner: neo4j
+    group: neo4j
+    mode: 0600
+  loop:
+    - { src: '/etc/pki/tls/certs/{{ ansible_fqdn }}.crt', dest: neo4j.cert }
+    - { src: '/etc/pki/tls/private/{{ ansible_fqdn }}.pem.key', dest: neo4j.key }
+
+- name: Configure Neo4j
+  template:
+    src: neo4j.conf
+    dest: /etc/neo4j
+    owner: neo4j
+    group: neo4j
+    mode: 0644
+  notify: Restart neo4j
+
+- name: Configure the firewall
+  firewalld:
+    port: '{{ item }}'
+    immediate: true
+    permanent: true
+    state: enabled
+  loop:
+    - 7474/tcp
+    - 7473/tcp
+    - 7687/tcp
+
+- name: Start the neo4j service
+  service:
+    name: neo4j
+    state: started
+    enabled: yes
