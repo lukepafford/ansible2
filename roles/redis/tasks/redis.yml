@@ -1,0 +1,20 @@
+---
+- name: Install redis
+  yum:
+    name: redis
+    state: present
+
+- name: Configure redis
+  template:
+    src: redis.conf
+    dest: /etdc
+    owner: redis
+    group: root
+    mode: 0640
+  notify: Restart redis
+
+- name: Start and enable redis
+  service:
+    name: redis
+    state: started
+    enabled: yes
