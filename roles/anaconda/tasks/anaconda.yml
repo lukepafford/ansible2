@@ -1,0 +1,26 @@
+---
+- name: Install prereq packages
+  yum:
+    name: bzip2
+    state: present
+
+- name: Create the install Directory
+  file:
+    state: directory
+    path: '{{ anaconda_installDir }}'
+
+- name: Download anaconda
+  get_url:
+    url: '{{ anaconda_url }}'
+    dest: '{{ anaconda_installDir }}'
+    validate_certs: false
+    mode: 0755
+
+- name: Run the installer 
+  command: >
+    '{{ anaconda_installDir }}/{{ anaconda_url | basename }}' 
+    -b 
+    -f
+    -p {{ anaconda_installDir }}
+  args:
+    creates: '{{ anaconda_installDir }}/bin/conda'
