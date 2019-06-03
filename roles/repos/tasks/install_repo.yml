@@ -1,4 +1,4 @@
-- name: Install the repository
+- name: Install the repository {{ item }}
   yum:
     name: '{{ item }}'
     state: present
