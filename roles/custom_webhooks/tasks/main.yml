@@ -1,0 +1,4 @@
+---
+- import_tasks: custom_webhooks.yml
+  tags:
+    - custom_webhooks

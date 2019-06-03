@@ -1,0 +1,61 @@
+---
+- name: Create the app user
+  user:
+    name: '{{ custom_webhooks_user }}'
+
+- name: Create the custom hooks directory
+  file:
+    path: '{{ custom_webhooks_installDir }}'
+    state: directory
+    owner: '{{ custom_webhooks_user }}'
+    group: '{{ custom_webhooks_user }}'
+    mode: 0750
+
+- name: Create the secrets file
+  copy:
+    content: '{{ custom_webhooks_secret }}'
+    dest: '{{ custom_webhooks_installDir }}/secret'
+    owner: '{{ custom_webhooks_user }}'
+    group: '{{ custom_webhooks_user }}'
+    mode: 0600
+
+- name: Create the anaconda environment
+  script: create-anaconda-env.py {{ custom_webhooks_condaEnvironment }}
+  args:
+    executable: python
+  changed_when: False
+
+- name: Install app dependencies
+  shell: source activate {{ custom_webhooks_condaEnvironment }} && conda install flask --yes
+  changed_when: False
+
+- name: Install the webhook service
+  template:
+    src: webhook.service
+    dest: /etc/systemd/system
+    owner: root
+    group: root
+    mode: 0644
+  notify: Reload systemd
+
+- name: Install the webhook app
+  template: 
+    src: webhook.py
+    dest: '{{ custom_webhooks_installDir }}'
+    owner: '{{ custom_webhooks_user }}'
+    group: '{{ custom_webhooks_user }}'
+    mode: 0640
+  notify: Restart webhook
+
+- name: Configure the firewall
+  firewalld:
+    port: '{{ custom_webhooks_port }}/tcp'
+    permanent: yes
+    state: enabled
+    immediate: yes
+
+- name: Start and enable the webhook service
+  service:
+    name: webhook
+    state: started
+    enabled: yes
