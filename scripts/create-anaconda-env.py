@@ -6,6 +6,7 @@ if len(sys.argv) == 1:
 
 envName = sys.argv[1]
 version = sys.argv[2] if len(sys.argv) > 2 else '3.7.3'
+retCode = 0
 
 condaList = [ 'conda', 'env', 'list']
 condaCreate = ['conda', 
@@ -19,4 +20,7 @@ condaCreate = ['conda',
 condaEnvironments = sp.check_output(condaList)
 
 if envName not in condaEnvironments:
+	retCode = 2
 	sp.check_call(condaCreate)
+
+sys.exit(retCode)

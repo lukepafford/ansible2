@@ -6,11 +6,15 @@ if len(sys.argv) < 3:
   
 envName = sys.argv[1]
 packages = sys.argv[2:]
+retCode = 0
 
 condaList = [ 'conda', 'list', '-n', envName ]
-installedPackages = sp.check_output(condaList, text=True).split()
+installedPackages = sp.check_output(condaList).split()
 
-packagesNeedingInstall = list(filter(lambda x: x not in installedPackages, packages))
+packagesNeedingInstall = filter(lambda x: x not in installedPackages, packages)
 if packagesNeedingInstall:
-  condaInstall = [ 'conda', 'install', '-n', envName, *packagesNeedingInstall, '--yes' ]
-  sp.check_call(condaInstall)
+	retCode = 2
+	condaInstall = [ 'conda', 'install', '-n', envName, '--yes' ] + packagesNeedingInstall
+	sp.check_call(condaInstall)
+
+sys.exit(retCode)

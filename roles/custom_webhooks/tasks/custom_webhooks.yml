@@ -23,11 +23,17 @@
   script: create-anaconda-env.py {{ custom_webhooks_condaEnvironment }}
   args:
     executable: python
-  changed_when: False
+  register: createResults
+  changed_when: createResults.rc == 2
+  failed_when: createResults.rc == 1
 
 - name: Install app dependencies
-  shell: source activate {{ custom_webhooks_condaEnvironment }} && conda install flask --yes
-  changed_when: False
+  script: install-anaconda-packages.py {{ custom_webhooks_condaEnvironment }} flask
+  args:
+    executable: python
+  register: installResults
+  changed_when: installResults.rc == 2
+  failed_when: createResults.rc == 1
 
 - name: Install the webhook service
   template:
