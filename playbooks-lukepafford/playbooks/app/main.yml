@@ -1,0 +1,6 @@
+---
+- hosts: app
+  roles:
+    - anaconda
+    - gunicorn
+    - redis

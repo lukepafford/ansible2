@@ -1,0 +1,8 @@
+---
+- name: Install Gunicorn packages from yum (Keep it simple unless later features are needed)
+  yum:
+    name:
+      - python-gunicorn
+      - python-greenlet
+      - python-eventlet
+    state: present

@@ -4,6 +4,7 @@
     name:
       - vim
       - git
+      - ansible
       - nodejs
       - policycoreutils-python
       - psmisc

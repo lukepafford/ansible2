@@ -1,3 +1,4 @@
+---
 - name: Install the repository {{ item }}
   yum:
     name: '{{ item }}'
@@ -11,4 +12,4 @@
 
 - name: Reinstall the repo file
   command: yum -y reinstall {{ item }}
-  when: repoStatus.rc == 1
+ when: repoStatus.rc == 1

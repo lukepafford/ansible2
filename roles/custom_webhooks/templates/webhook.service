@@ -1,0 +1,15 @@
+[Unit]
+Description=Custom webhook listener for Github events
+After=network.target
+
+[Service]
+User={{ custom_webhooks_user }}
+Group={{ custom_webhooks_user }}
+Environment=secretFile={{ custom_webhooks_installDir }}/secret
+Environment=pipelineScript={{ custom_webhooks_pipelineScript }}
+WorkingDirectory={{ custom_webhooks_installDir }}
+ExecStart=/bin/bash -c "source activate {{ custom_webhooks_condaEnvironment }} ; gunicorn -b '0.0.0.0:{{ custom_webhooks_port }}' webhook:app"
+Restart=always
+
+[Install]
+WantedBy=multi-user.target

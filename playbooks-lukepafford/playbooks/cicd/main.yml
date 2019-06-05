@@ -2,5 +2,6 @@
   roles:
     - jenkins
     - deploy_key
+    - anaconda
   tags:
     - cicd
