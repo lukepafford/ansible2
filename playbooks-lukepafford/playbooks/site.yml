@@ -1,0 +1,5 @@
+---
+- import_playbook: base_server/base_server.yml
+- import_playbook: db/main.yml
+- import_playbook: app/main.yml
+- import_playbook: cdn/main.yml
