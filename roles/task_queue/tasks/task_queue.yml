@@ -21,6 +21,17 @@
     - task_queue.py
   notify: Restart task_queue
 
+- name: Create log and pid dirs
+  file:
+    path: '{{ item }}'
+    owner: '{{ task_queue_user }}'
+    group: '{{ task_queue_user }}'
+    mode: 0700
+    state: directory
+  loop:
+    - /var/log/celery
+    - /var/run/celery
+
 - name: Configure the task_queue service
   template:
     src: task_queue.service

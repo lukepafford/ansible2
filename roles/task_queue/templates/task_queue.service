@@ -3,19 +3,12 @@ Description=Task Queue service
 After=network.target
 
 [Service]
-Type=forking
+Type=simple
 User={{ task_queue_user }}
 Group={{ task_queue_user }}
 EnvironmentFile={{ task_queue_installDir }}/env
-WorkingDirectory=/opt/celery
-ExecStart=/bin/sh -c '${CELERY_BIN} multi start ${CELERYD_NODES} \
-  -A ${CELERY_APP} --pidfile=${CELERYD_PID_FILE} \
-  --logfile=${CELERYD_LOG_FILE} --loglevel=${CELERYD_LOG_LEVEL} ${CELERYD_OPTS}'
-ExecStop=/bin/sh -c '${CELERY_BIN} multi stopwait ${CELERYD_NODES} \
-  --pidfile=${CELERYD_PID_FILE}'
-ExecReload=/bin/sh -c '${CELERY_BIN} multi restart ${CELERYD_NODES} \
-  -A ${CELERY_APP} --pidfile=${CELERYD_PID_FILE} \
-  --logfile=${CELERYD_LOG_FILE} --loglevel=${CELERYD_LOG_LEVEL} ${CELERYD_OPTS}'
+WorkingDirectory={{ task_queue_installDir }}
+ExecStart=/bin/bash -c 'source /var/anaconda/bin/activate {{ task_queue_condaEnvironment }} ; celery worker'
 
 [Install]
 WantedBy=multi-user.target

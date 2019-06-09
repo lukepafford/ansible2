@@ -3,7 +3,7 @@
   user:
     name: '{{ anaconda_app_user }}'
 
-- name: Create the {{ anaconda_app_installDSir }} directory
+- name: Create the {{ anaconda_app_installDir }} directory
   file:
     path: '{{ anaconda_app_installDir }}'
     state: directory

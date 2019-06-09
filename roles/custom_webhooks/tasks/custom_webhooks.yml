@@ -1,15 +1,12 @@
 ---
-- name: Create the app user
-  user:
-    name: '{{ custom_webhooks_user }}'
-
-- name: Create the custom hooks directory
-  file:
-    path: '{{ custom_webhooks_installDir }}'
-    state: directory
-    owner: '{{ custom_webhooks_user }}'
-    group: '{{ custom_webhooks_user }}'
-    mode: 0750
+- name: Create the anaconda app webhook
+  import_role:
+    name: anaconda_app
+  vars:
+    anaconda_app_user: '{{ custom_webhooks_user }}'
+    anaconda_app_installDir: '{{ custom_webhooks_installDir }}'
+    anaconda_app_condaEnvironment: '{{ custom_webhooks_condaEnvironment }}'
+    anaconda_app_dependencies: '{{ custom_webhooks_dependencies }}'
 
 - name: Create the secrets file
   copy:
@@ -18,22 +15,6 @@
     owner: '{{ custom_webhooks_user }}'
     group: '{{ custom_webhooks_user }}'
     mode: 0600
-
-- name: Create the anaconda environment
-  script: create-anaconda-env.py {{ custom_webhooks_condaEnvironment }}
-  args:
-    executable: python
-  register: createResults
-  changed_when: createResults.rc == 2
-  failed_when: createResults.rc == 1
-
-- name: Install app dependencies
-  script: install-anaconda-packages.py {{ custom_webhooks_condaEnvironment }} flask celery
-  args:
-    executable: python
-  register: installResults
-  changed_when: installResults.rc == 2
-  failed_when: createResults.rc == 1
 
 - name: Install the webhook service
   template:
