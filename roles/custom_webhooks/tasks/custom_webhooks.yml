@@ -28,7 +28,7 @@
   failed_when: createResults.rc == 1
 
 - name: Install app dependencies
-  script: install-anaconda-packages.py {{ custom_webhooks_condaEnvironment }} flask
+  script: install-anaconda-packages.py {{ custom_webhooks_condaEnvironment }} flask celery
   args:
     executable: python
   register: installResults

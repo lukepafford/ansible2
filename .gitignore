@@ -2,7 +2,6 @@ hosts
 ansible.cfg
 host_vars/
 group_vars/
-template/
 secrets/
 *.retry
 node_modules/
