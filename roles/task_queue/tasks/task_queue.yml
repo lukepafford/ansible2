@@ -1,0 +1,37 @@
+---
+- name: Create the anaconda app
+  import_role:
+    name: anaconda_app
+  vars:
+    anaconda_app_user: '{{ task_queue_user }}'
+    anaconda_app_installDir: '{{ task_queue_installDir }}'
+    anaconda_app_condaEnvironment:  '{{ task_queue_condaEnvironment }}'
+    anaconda_app_dependencies: '{{ task_queue_dependencies }}'
+
+- name: Install app files
+  template:
+    src: '{{ item }}'
+    dest: '{{ task_queue_installDir }}'
+    owner: '{{ task_queue_user }}'
+    group: '{{ task_queue_user }}'
+    mode: 0640
+  loop:
+    - env
+    - conf.py
+    - task_queue.py
+  notify: Restart task_queue
+
+- name: Configure the task_queue service
+  template:
+    src: task_queue.service
+    dest: /etc/systemd/system
+    owner: root
+    group: root
+    mode: 0644
+  notify: Reload systemd
+
+- name: Start and enable the service
+  service: 
+    name: task_queue
+    state: started
+    enabled: yes

@@ -1,0 +1,4 @@
+---
+- import_tasks: task_queue.yml
+  tags:
+    - task_queue

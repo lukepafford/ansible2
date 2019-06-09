@@ -1,0 +1,31 @@
+---
+- name: Create the {{ anaconda_app_user }} user
+  user:
+    name: '{{ anaconda_app_user }}'
+
+- name: Create the {{ anaconda_app_installDSir }} directory
+  file:
+    path: '{{ anaconda_app_installDir }}'
+    state: directory
+    owner: '{{ anaconda_app_user }}'
+    group: '{{ anaconda_app_user }}'
+    mode: 0750
+
+- name: Create the anaconda environment {{ anaconda_app_condaEnvironment }}
+  script: create-anaconda-env.py {{ anaconda_app_condaEnvironment }}
+  args:
+    executable: python
+  register: createResults
+  changed_when: createResults.rc == 2
+  failed_when: createResults.rc == 1
+
+- name: Install app dependencies
+  script: >
+    install-anaconda-packages.py 
+    {{ anaconda_app_condaEnvironment }} 
+    {{ anaconda_app_dependencies | join(' ')}}
+  args:
+    executable: python
+  register: installResults
+  changed_when: installResults.rc == 2
+  failed_when: createResults.rc == 1

@@ -1,0 +1,9 @@
+---
+- name: Restart task_queue
+  service:
+    name: task_queue
+    state: restarted
+
+- name: Reload systemd
+  systemd:
+    daemon_reload: true
