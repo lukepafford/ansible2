@@ -3,6 +3,13 @@ custom_webhooks
 
 Deploys custom flask app for receiving events from Github
 
+WARNING. Despite requiring `redis` as a dependency for anaconda,
+Python was still not able to find the library. The automation appeared
+to work, the conda environment showed that redis was installed. Despite this,
+no `redis` module could be found. I had to use `pip install redis` to get it to 
+see this. I should not have had to use pip to install the library when I had anaconda,
+but I did. Find out why this was.
+
 Requirements
 ------------
 
@@ -46,6 +53,15 @@ variables:
 		required: yes
 		default:
 		description: Name of Anaconda environment
+
+	- name: custom_webhooks_celeryPath
+		type: directory
+		required: yes
+		default:
+		description: Path containing celery module. The celery app
+								 should really be packaged and installed so we can
+								 just import it! (NEEDS WORK)
+
 ```
 Dependencies
 ------------

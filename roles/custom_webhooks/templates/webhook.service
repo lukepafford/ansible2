@@ -6,9 +6,10 @@ After=network.target
 User={{ custom_webhooks_user }}
 Group={{ custom_webhooks_user }}
 Environment=secretFile={{ custom_webhooks_installDir }}/secret
+Environment=PYTHONPATH={{ custom_webhooks_celeryPath }}
 Environment=pipelineScript={{ custom_webhooks_pipelineScript }}
 WorkingDirectory={{ custom_webhooks_installDir }}
-ExecStart=/bin/bash -c "source activate {{ custom_webhooks_condaEnvironment }} ; gunicorn -b '0.0.0.0:{{ custom_webhooks_port }}' webhook:app"
+ExecStart=/bin/bash -c "source /var/anaconda/bin/activate {{ custom_webhooks_condaEnvironment }} ; gunicorn -b '0.0.0.0:{{ custom_webhooks_port }}' webhook:app"
 Restart=always
 
 [Install]

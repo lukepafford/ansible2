@@ -4,7 +4,6 @@
     PATH: '{{ anaconda_installDir }}/bin:{{ ansible_env.PATH }}'
   roles:
     - anaconda
-    - gunicorn
     - redis
     - custom_webhooks
     - task_queue
