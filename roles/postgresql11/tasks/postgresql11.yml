@@ -1,0 +1,37 @@
+---
+- name: Install Postgresql repo
+  yum:
+    name: https://download.postgresql.org/pub/repos/yum/reporpms/EL-7-x86_64/pgdg-redhat-repo-latest.noarch.rpm
+    state: present
+
+- name: Install Postgresql 11 server
+  yum:
+    name: postgresql11-server
+    state: present
+
+- name: Create PATH shortcut file
+  template:
+    src: postgres.sh
+    dest: /etc/profile.d
+    owner: root
+    group: root
+    mode: 0755
+
+- name: Initialize the server
+  command: /usr/pgsql-11/bin/postgresql-11-setup initdb
+  args:
+    creates: /var/lib/pgsql/11/data
+
+- name: Configure the firewall
+  firewalld:
+    service: postgresql
+    immediate: true
+    permanent: true
+    state: enabled
+
+- name: Start and enable the service
+  service:
+    name: postgresql-11
+    state: started
+    enabled: yes
+  

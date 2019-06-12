@@ -2,4 +2,4 @@
 - hosts: db
   roles:
     - neo4j
-
+    - postgresql11

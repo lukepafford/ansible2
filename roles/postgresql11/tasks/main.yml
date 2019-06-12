@@ -1,0 +1,4 @@
+---
+- import_tasks: postgresql11.yml
+  tags:
+    - postgresql11

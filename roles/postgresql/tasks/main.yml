@@ -1,4 +1,0 @@
----
-- import_tasks: postgresql.yml
-  tags:
-    - postgresql
