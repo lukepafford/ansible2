@@ -23,6 +23,6 @@
 - name: Create the HBA entry
   lineinfile:
     path: /var/lib/pgsql/11/data/pg_hba.conf
-    line: 'host {{ role_name }} {{ flask_app_dbUser }} {{ ansible_default_ipv4.address }}/24 md5'
+    line: 'host {{ role_name }} {{ flask_app_dbUser }} {{ ansible_default_ipv4.network }}/24 md5'
     state: present
     regexp: '^host\s+{{ role_name }}'
