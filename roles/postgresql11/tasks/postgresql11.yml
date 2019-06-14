@@ -6,7 +6,11 @@
 
 - name: Install Postgresql 11 server
   yum:
-    name: postgresql11-server
+    name: 
+      - postgresql11-server
+      - postgresql11
+      - postgresql11-devel
+      - python-psycopg2
     state: present
 
 - name: Create PATH shortcut file
@@ -28,6 +32,15 @@
     immediate: true
     permanent: true
     state: enabled
+
+- name: Configure the service
+  template:
+    src: postgresql.conf
+    dest: /var/lib/pgsql/11/data
+    owner: postgres
+    group: postgres
+    mode: 0600
+  notify: Restart postgresql11
 
 - name: Start and enable the service
   service:

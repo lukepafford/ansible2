@@ -7,3 +7,4 @@
     - redis
     - custom_webhooks
     - task_queue
+    - flask_app
