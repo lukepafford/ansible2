@@ -7,7 +7,7 @@
   postgresql_user:
     db: '{{ role_name }}'
     name: '{{ flask_app_dbUser }}'
-    password: '{{ flask_app_dbPassword |hash("md5") }}'
+    password: '{{ flask_app_dbPassword }}'
     role_attr_flags: NOSUPERUSER
     expires: infinity
     state:  present
