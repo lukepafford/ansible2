@@ -1,0 +1,28 @@
+---
+- name: Create the {{ role_name  }} db
+  postgresql_db:
+    name: '{{ role_name }}'
+
+- name: Create the {{ flask_app_dbUser }} user
+  postgresql_user:
+    db: '{{ role_name }}'
+    name: '{{ flask_app_dbUser }}'
+    password: '{{ flask_app_dbPassword |hash("md5") }}'
+    role_attr_flags: NOSUPERUSER
+    expires: infinity
+    state:  present
+
+- name: Grant {{ flask_app_dbUser }} all privileges on the db
+  postgresql_privs:
+    database: '{{ role_name }}'
+    privs: ALL
+    objs: ALL_IN_SCHEMA
+    state: present
+    role: '{{ flask_app_dbUser }}'
+
+- name: Create the HBA entry
+  lineinfile:
+    path: /var/lib/pgsql/11/data/pg_hba.conf
+    line: 'host {{ role_name }} {{ flask_app_dbUser }} {{ ansible_default_ipv4.address }}/24 md5'
+    state: present
+    regexp: '^host\s+{{ role_name }}'

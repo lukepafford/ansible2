@@ -1,0 +1,5 @@
+---
+- import_tasks: db_provision.yml
+  become_user: postgres
+  become: true
+  delegate_to: '{{ flask_app_dbServer }}'

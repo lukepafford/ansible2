@@ -1,0 +1,4 @@
+---
+- import_tasks: flask_app.yml
+  tags:
+    - flask_app
