@@ -7,5 +7,6 @@
     - sudoers
     - repos
     - software
+    - anaconda
     - static-hosts
     - domain

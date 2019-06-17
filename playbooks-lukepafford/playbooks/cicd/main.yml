@@ -1,7 +1,10 @@
 - hosts: cicd
+  environment:
+    PATH: '{{ anaconda_installDir }}/bin:{{ ansible_env.PATH }}'
   roles:
-    - jenkins
-    - deploy_key
     - anaconda
+    - redis
+    - custom_webhooks
+    - task_queue
   tags:
     - cicd
