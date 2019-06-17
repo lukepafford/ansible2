@@ -7,6 +7,8 @@
     anaconda_app_installDir: '{{ custom_webhooks_installDir }}'
     anaconda_app_condaEnvironment: '{{ custom_webhooks_condaEnvironment }}'
     anaconda_app_dependencies: '{{ custom_webhooks_dependencies }}'
+    anaconda_app_condaHome: '{{ custom_webhooks_condaHome }}'
+    anaconda_app_pipDependencies: '{{ custom_webhooks_pipDependencies }}'
 
 - name: Create the secrets file
   copy:

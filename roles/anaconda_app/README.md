@@ -35,6 +35,17 @@ variables:
 		default:
 		description: List of packages to be installed into the environment
 
+	- name: anaconda_app_condaHome
+		type: str
+		required: yes
+		default:
+		description: Path to the installation of anaconda
+
+	- name: anaconda_app_dependencies
+		type: list
+		required: yes
+		default:
+		description: List of packages to be installed into the environment
 ```
 Dependencies
 ------------

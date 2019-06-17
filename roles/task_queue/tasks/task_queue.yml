@@ -7,6 +7,8 @@
     anaconda_app_installDir: '{{ task_queue_installDir }}'
     anaconda_app_condaEnvironment:  '{{ task_queue_condaEnvironment }}'
     anaconda_app_dependencies: '{{ task_queue_dependencies }}'
+    anaconda_app_condaHome: '{{ task_queue_condaHome }}'
+    anaconda_app_pipDependencies: '{{ task_queue_pipDependencies }}'
 
 - name: Install app files
   template:
