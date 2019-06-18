@@ -1,0 +1,4 @@
+---
+- hosts: minishift
+  roles:
+    - minishift

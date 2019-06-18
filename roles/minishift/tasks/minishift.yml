@@ -1,0 +1,50 @@
+---
+- name: Install KVM environment as minishift prereq
+  yum:
+    name: 
+      - qemu-kvm
+      - libvirt
+    state: present
+
+- name: Download the docker-machine-driver-kvm
+  get_url:
+    url: https://github.com/dhiltgen/docker-machine-kvm/releases/download/v0.10.0/docker-machine-driver-kvm-centos7 
+    dest: /bin/docker-machine-driver-kvm
+    owner: root
+    group: root
+    mode: 0755
+
+- name: Download the minishift binary
+  get_url:
+    url: https://github.com/minishift/minishift/releases/download/v1.34.0/minishift-1.34.0-linux-amd64.tgz
+    dest: /opt/
+  register: minishift
+
+- name: Unarchive minishift
+  unarchive:
+    remote_src: true
+    src: '{{ minishift.dest }}'
+    dest: /opt/
+
+- name: Find the minishift executable
+  find:
+    paths: /opt
+    patterns:
+      - minishift
+    recurse: yes
+  register: minishiftExecutable
+
+- name: Install executable
+  copy:
+    remote_src: yes
+    src: '{{ minishiftExecutable.files[0].path }}'
+    dest: /bin
+    owner: root
+    group: root
+    mode: 0755
+
+- name: Start and enable the libvirt service
+  service:
+    name: libvirtd
+    state: started
+    yes
