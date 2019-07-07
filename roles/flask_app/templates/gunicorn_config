@@ -1,0 +1,4 @@
+reload = False
+bind = ['{{ ansible_default_ipv4.address }}:{{ flask_app_port }}']
+worker_class = 'eventlet'
+forwarded_allow_ips = '192.168.1.20'

@@ -1,0 +1,6 @@
+name: flask_app
+channels:
+  - conda-forge
+  - https://lukepafford.com/cdn/software/conda
+dependencies:
+  - flask_app

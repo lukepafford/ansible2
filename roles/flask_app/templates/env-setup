@@ -1,0 +1,5 @@
+source activate flask_app
+
+export FLASK_APP_CONFIG_FILE='{{ flask_app_configFile }}'
+export FLASK_ENV='production'
+export FLASK_APP='flask_app:app'

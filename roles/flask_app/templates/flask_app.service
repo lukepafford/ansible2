@@ -1,0 +1,15 @@
+[Unit]
+Description=Luke Paffords flask application
+After=network.target
+
+[Service]
+User={{ flask_app_user }}
+Group={{ flask_app_user }}
+Environment=FLASK_APP_CONFIG_FILE={{ flask_app_configFile }}
+Environment=FLASK_ENV=production
+WorkingDirectory={{ flask_app_installDir }}
+ExecStart={{ flask_app_installDir }}/start.sh
+Restart=always
+
+[Install]
+WantedBy=multi-user.target
