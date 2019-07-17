@@ -1,0 +1,8 @@
+---
+- name: Rebuild grub
+  command: grub2-mkconfig -o /boot/grub2/grub.cfg
+  listen: Reset fips
+  
+- name: Rebuild initramfs
+  command: dracut --force
+  listen: Reset fips
