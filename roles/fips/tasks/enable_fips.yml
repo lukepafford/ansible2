@@ -1,0 +1,40 @@
+---
+- name: Install dracut-fips
+  yum:
+    name: dracut-fips
+    state: present
+    
+- name: Check if the CPU supports AES-NI
+  command: grep -qw aes /proc/cpuinfo
+  changed_when: false
+  failed_when: false
+  register: aes_supported
+  
+- name: Install dracut-fips-aesni if AES-NI is supported
+  yum:
+    name: dracut-fips-aesni
+    state: present
+  when: aes_supported.rc == 0
+  
+- name: Set fips=1 in default grub
+  script: idempotent-key-value-pair.py /etc/default/grub GRUB_CMDLINE_LINUX fips 1
+  notify: Reset fips
+  
+- name: Set the boot UUID in default grub
+  script: idempotent-key-value-pair.py /etc/default/grub GRUB_CMDLINE_LINUX boot UUID={{ boot_uuid }}
+  notify: Reset fips
+  
+- name: Ensure the prelink sysconfig file exists
+  file:
+    path: /etc/sysconfig/prelink
+    state: touch
+    owner: root
+    group: root
+    mode: 0644
+  
+- name: Disable prelinking
+  lineinfile:
+    path: /etc/sysconfig/prelink
+    regexp: '^PRELINKING'
+    line: 'PRELINKING=no'
+    state: present
