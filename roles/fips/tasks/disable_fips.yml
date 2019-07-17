@@ -1,0 +1,11 @@
+---
+- name: Set fips=0 in default grub
+  script: idempotent-key-value-pair.py /etc/default/grub fips 0
+  notify: Reset fips
+  
+- name: Remove dracut-fips
+  yum:
+    name:
+      - dracut-fips
+      - dracut-fips-aesni
+    state: absent
