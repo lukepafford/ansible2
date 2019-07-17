@@ -1,0 +1,4 @@
+---
+- include: fips.yml
+  tags:
+    - fips
