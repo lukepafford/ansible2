@@ -16,12 +16,16 @@
     state: present
   when: aes_supported.rc == 0
   
-- name: Set fips=1 in default grub
-  script: idempotent-key-value-pair.py /etc/default/grub GRUB_CMDLINE_LINUX fips 1
-  notify: Reset fips
-  
-- name: Set the boot UUID in default grub
-  script: idempotent-key-value-pair.py /etc/default/grub GRUB_CMDLINE_LINUX boot UUID={{ boot_uuid }}
+- name: Enable fips in /etc/default/grub
+  script: '{{ item }}'
+  loop:
+    - idempotent-grub-cmdline-settings.py /etc/default/grub GRUB_CMDLINE_LINUX fips 1
+    - idempotent-grub-cmdline-settings.py /etc/default/grub GRUB_CMDLINE_LINUX_DEFAULT fips 1
+    - idempotent-grub-cmdline-settings.py /etc/default/grub GRUB_CMDLINE_LINUX boot UUID={{ boot_uuid }}
+    - idempotent-grub-cmdline-settings.py /etc/default/grub GRUB_CMDLINE_LINUX_DEFAULT UUID={{ boot_uuid }}
+  register: grub_status
+  changed_when: grub_status.rc == 10
+  failed_when: grub_status.rc not in [0, 10]
   notify: Reset fips
   
 - name: Ensure the prelink sysconfig file exists
@@ -31,6 +35,7 @@
     owner: root
     group: root
     mode: 0644
+  changed_when: false
   
 - name: Disable prelinking
   lineinfile:
