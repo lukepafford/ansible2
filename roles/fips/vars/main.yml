@@ -1,0 +1,2 @@
+---
+boot_uuid: '{{ ansible_mounts | selectattr("mount", "match", "^/boot$") | map(attribute="uuid") | list | first }}'
