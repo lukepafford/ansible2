@@ -1,6 +1,12 @@
 ---
-- name: Set fips=0 in default grub
-  script: idempotent-key-value-pair.py /etc/default/grub fips 0
+- name: Disable fips in /etc/default/grub
+  script: '{{ item }}'
+  loop:
+    - idempotent-grub-cmdline-settings.py /etc/default/grub GRUB_CMDLINE_LINUX fips 0
+    - idempotent-grub-cmdline-settings.py /etc/default/grub GRUB_CMDLINE_LINUX_DEFAULT fips 0
+  register: grub_status
+  changed_when: grub_status.rc == 10
+  failed_when: grub_status.rc not in [0, 10]
   notify: Reset fips
   
 - name: Remove dracut-fips
