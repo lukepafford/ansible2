@@ -1,0 +1,6 @@
+---
+- import_tasks: enable_fips.yml
+  when: fips_enabled
+  
+- import_tasks: disable_fips.yml
+  when: not fips_enabled
