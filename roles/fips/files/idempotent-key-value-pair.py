@@ -68,8 +68,16 @@ with open(mod_file, 'r') as f:
         else:
           new_values.append(setting)
       else:
-        # Don't modify any other lines
-        modified_lines.append(line)
+        if not setting_exists:
+          # Append key value pair to end of settings
+          new_values.append(join_key_value(key, value))
+          
+      # Set the modified line to match the original format
+      modified_line = '{0}="{1}"\n'.format(matching_key, ' '.join(new_values))
+      modified_lines.append(modified_line)
+    else:
+      # Don't modify any other lines
+      modified_lines.append(line)
         
 # Write modified file to temp file
 with tempfile.NamedTemporaryFile(delete=False) as f:
