@@ -70,7 +70,7 @@ changed = False
 with open(mod_file, 'r') as f:
   matching_key_exists = False
   for line in f:
-    if re.match(matching_key, line):
+    if re.match(matching_key_regex, line):
       matching_key_exists = True
       _,_,values = line.partition('=')
       # Remove quotes from value list
