@@ -10,6 +10,7 @@
       - psmisc
       - lsof
       - htop
+      - python36
     state: present
 
 - name: Install required NPM packages
