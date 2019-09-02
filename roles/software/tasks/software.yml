@@ -12,6 +12,7 @@
       - htop
       - python36
       - python36-devel
+      - python36-setuptools
     state: present
 
 - name: Install required NPM packages
