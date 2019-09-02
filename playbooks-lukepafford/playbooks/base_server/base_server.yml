@@ -5,8 +5,10 @@
     NODE_PATH: '/usr/lib/node_modules'
   roles:
     - sudoers
+    - known_hosts
     - repos
     - software
-    - anaconda
     - static-hosts
     - domain
+    - anaconda
+    - fips

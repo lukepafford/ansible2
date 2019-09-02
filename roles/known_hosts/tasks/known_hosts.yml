@@ -1,0 +1,8 @@
+---
+- name: Install the known hosts file
+  copy:
+    src: ssh_known_hosts
+    dest: /etc/ssh
+    owner: root
+    group: root
+    mode: 0644

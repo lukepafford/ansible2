@@ -1,0 +1,4 @@
+---
+- import_tasks: known_hosts.yml
+  tags:
+    - known_hosts
