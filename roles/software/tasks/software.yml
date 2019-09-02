@@ -13,6 +13,7 @@
       - python36
       - python36-devel
       - python36-setuptools
+      - python-virtualenv
     state: present
 
 - name: Install required NPM packages
