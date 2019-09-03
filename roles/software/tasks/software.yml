@@ -14,6 +14,7 @@
       - python36-devel
       - python36-setuptools
       - python-virtualenv
+      - postgresql-devel
     state: present
 
 - name: Install required NPM packages
