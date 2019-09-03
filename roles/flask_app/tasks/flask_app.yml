@@ -11,4 +11,4 @@
     owner: root
     group: root
     mode: 0600
-    enabled: yes
+    validate: /usr/sbin/visudo -cf %s
