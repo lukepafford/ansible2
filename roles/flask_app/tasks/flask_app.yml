@@ -4,46 +4,11 @@
   become: true
   delegate_to: '{{ flask_app_dbServer }}'
 
-- name: Create the install dir
-  file:
-    path: '{{ flask_app_installDir }}'
-    owner: '{{ flask_app_user }}'
-    group: '{{ flask_app_user }}'
-    mode: 0770
-    
-- name: Install the flask_app service
-  template: 
-    src: flask_app.service
-    dest: /etc/systemd/system
+- name: Install sudoers for app user
+  template:
+    src: 'app_service'
+    dest: /etc/sudoers.d
     owner: root
     group: root
-    mode: 0644
-  notify: Reload systemd
-
-- meta: flush_handlers
-
-- name: Install the deploy files
-  template:
-    src: '{{ item }}'
-    dest: '{{ flask_app_installDir }}'
-    owner: '{{ flask_app_user }}'
-    group: '{{ flask_app_user }}'
-    mode: 0770
-  loop:
-    - conf.py
-    - environment.yml
-    - env-setup
-    - gunicorn_config
-    - install.sh
-    - start.sh
-  register: deploy_files
-
-- name: Install the flask application
-  command: '{{ flask_app_installDir }}/install.sh'
-  when: deploy_files.changed
-
-- name: Start and enable the service
-  service:
-    name: flask_app
-    state: started
+    mode: 0600
     enabled: yes

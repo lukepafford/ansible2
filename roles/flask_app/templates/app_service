@@ -1,0 +1,5 @@
+{{ flask_app_user }} ALL=NOPASSWD: /bin/systemctl restart flask_app
+{{ flask_app_user }} ALL=NOPASSWD: /bin/systemctl stop flask_app
+{{ flask_app_user }} ALL=NOPASSWD: /bin/systemctl start flask_app
+{{ flask_app_user }} ALL=NOPASSWD: /usr/bin/install -o root -g root -m 0644 {{ flask_app_installDir }}/flask_app.service /etc/systemd/system/flask_app.service
+{{ flask_app_user }} ALL=NOPASSWD: /bin/systemctl daemon-reload
