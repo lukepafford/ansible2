@@ -1,22 +1,39 @@
 ---
 - name: Install required packages
-  yum:
+  package:
     name:
       - vim
       - git
       - ansible
       - nodejs
-      - policycoreutils-python
       - psmisc
       - lsof
       - htop
+      - postgresql-devel
+    state: present
+
+- name: Install distribution specific packages
+  package:
+    name:
+      - policycoreutils-python
       - python36
       - python36-pip
       - python36-devel
       - python36-setuptools
       - python-virtualenv
-      - postgresql-devel
     state: present
+  when: ansible_distribution_major_version == 7
+
+- name: Install distribution specific packages
+  package:
+    name:
+      - python3-policycoreutils
+      - python3
+      - python3-pip
+      - python3-devel
+      - python3-setuptools
+      - python3-virtualenv
+  when: ansible_distribution_major_version == 8
 
 - name: Install required NPM packages
   npm:
