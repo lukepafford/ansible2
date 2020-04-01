@@ -8,7 +8,7 @@
     - known_hosts
     - repos
     - software
-    - static-hosts
+      #- static-hosts
     - domain
     - anaconda
-    - fips
+      #- fips
