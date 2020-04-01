@@ -2,7 +2,11 @@
 - hosts: app
   environment:
     PATH: '{{ anaconda_installDir }}/bin:{{ ansible_env.PATH }}'
+  vars:
+    docker_ce_admins:
+      - luke.pafford
   roles:
+    - docker-ce
     - anaconda
     - redis
-    - flask_app
+    #- flask_app
