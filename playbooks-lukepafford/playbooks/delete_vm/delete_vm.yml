@@ -1,9 +1,12 @@
 ---
 - hosts: 127.0.0.1
   connection: local
+  vars:
+    domain: lukepafford.com
+    reverse_domain: 1.168.192.in-addr.arpa
   tasks:
     - name: Remove the virtual machine
-      ovirt_host:
+      ovirt_vm:
         auth:
           hostname: '{{ lookup("env", "OVIRT_HOSTNAME") }}'
           username: '{{ lookup("env", "OVIRT_USERNAME") }}'
@@ -12,3 +15,39 @@
         state: absent
         force: True
         name: '{{ delete_host }}'
+
+
+    - name: Quickly get the IP of host
+      shell: >
+        ping -c 1 {{ delete_host }} | 
+        grep PING |
+        cut -d '(' -f 2 |
+        cut -d ')' -f 1
+      register: delete_ip
+      failed_when: not delete_ip.stdout
+
+
+    - name: Delete the A record
+      ipa_dnsrecord:
+        ipa_host: '{{ lookup("env", "IPA_HOST") }}'
+        ipa_user: '{{ lookup("env", "IPA_USER") }}'
+        ipa_pass: '{{ lookup("env", "IPA_PASS") }}'
+        validate_certs: false
+        state: absent
+        zone_name: '{{ domain }}'
+        record_name: '{{ delete_host }}'
+        record_value: '{{ delete_ip.stdout }}'
+        record_type: 'A'
+
+
+    - name: Delete the PTR record
+      ipa_dnsrecord:
+        ipa_host: '{{ lookup("env", "IPA_HOST") }}'
+        ipa_user: '{{ lookup("env", "IPA_USER") }}'
+        ipa_pass: '{{ lookup("env", "IPA_PASS") }}'
+        validate_certs: false
+        state: absent
+        zone_name: '{{ reverse_domain }}'
+        record_name: '{{ delete_ip.stdout }}'
+        record_value: '{{ delete_host }}'
+        record_type: 'PTR'
