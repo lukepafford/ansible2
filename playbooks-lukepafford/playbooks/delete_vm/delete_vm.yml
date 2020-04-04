@@ -5,6 +5,9 @@
     - name: Remove the virtual machine
       ovirt_host:
         auth:
+          hostname: '{{ lookup("env", "OVIRT_HOSTNAME") }}'
+          username: '{{ lookup("env", "OVIRT_USERNAME") }}'
+          password: '{{ lookup("env", "OVIRT_PASSWORD") }}'
           insecure: true
         state: absent
         name: '{{ delete_host }}'
