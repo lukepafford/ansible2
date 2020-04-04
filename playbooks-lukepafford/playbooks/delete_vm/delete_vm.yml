@@ -48,6 +48,6 @@
         validate_certs: false
         state: absent
         zone_name: '{{ reverse_domain }}'
-        record_name: '{{ delete_ip.stdout }}'
-        record_value: '{{ delete_host }}'
+        record_name: '{{ delete_ip.stdout.split(".")[-1] }}'
+        record_value: '{{ delete_host }}.{{ domain }}.'
         record_type: 'PTR'
