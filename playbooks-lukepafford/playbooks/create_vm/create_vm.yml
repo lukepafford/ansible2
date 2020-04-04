@@ -1,0 +1,51 @@
+---
+- hosts: localhost
+  connection: local
+  tasks:
+    - name: Create the vm disk
+      ovirt_disk:
+        activate: true
+        bootable: true
+        interface: virtio_virtio
+        storage_domain: Data
+        name: '{{ create_host }}_disk'
+        size: 50GiB
+        state: present
+        wait: true
+
+
+    - name: Create the vm
+      ovirt_vm:
+        cluster: Default
+        name: '{{ create_host }}'
+        state: present
+        memory: 2GiB
+        cpu_cores: 2
+        type: server
+        operating_system: rhel_8x64
+        boot_devices:
+          - hd
+          - network
+        disks:
+          - name: '{{ create_host }}_disk'
+            bootable: True
+        nics:
+          - name: nic1
+
+
+    - name: Update the vm nic
+      ovirt_nic:
+        vm: '{{ create_host }}'
+        name: nic1
+        state: plugged
+        interface: virtio
+        profile: ovirtmgmt
+        network: ovirtmgmt
+        wait: yes
+
+
+    - name: Start the vm
+      ovirt_vm:
+        cluster: Default
+        name: '{{ create_host }}'
+        state: running
