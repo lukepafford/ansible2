@@ -10,4 +10,5 @@
           password: '{{ lookup("env", "OVIRT_PASSWORD") }}'
           insecure: true
         state: absent
+        force: True
         name: '{{ delete_host }}'
