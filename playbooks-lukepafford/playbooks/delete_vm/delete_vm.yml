@@ -24,7 +24,6 @@
         cut -d '(' -f 2 |
         cut -d ')' -f 1
       register: delete_ip
-      failed_when: not delete_ip.stdout
 
 
     - name: Delete the A record
@@ -38,6 +37,7 @@
         record_name: '{{ delete_host }}'
         record_value: '{{ delete_ip.stdout }}'
         record_type: 'A'
+      when: delete_ip.stdout
 
 
     - name: Delete the PTR record
@@ -51,3 +51,4 @@
         record_name: '{{ delete_ip.stdout.split(".")[-1] }}'
         record_value: '{{ delete_host }}.{{ domain }}.'
         record_type: 'PTR'
+      when: delete_ip.stdout
