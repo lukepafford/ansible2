@@ -4,6 +4,12 @@
   vars:
     ks_host: https://192.168.1.20/ks
   tasks:
+    - name: Check if the vm exists prior to this
+      ovirt_vm_info:
+        pattern: name={{ create_host }}
+      register: vm_exists
+
+
     - name: Create the vm disk
       ovirt_disk:
         activate: true
@@ -52,12 +58,33 @@
       register: ovirt_nics
 
 
-    - name: Start the vm
+    - name: >
+        Start the vm.
+        The kickstart used must not have the 'reboot' option, or there will
+        be an infinite install. It should be set to 'shutdown' or 'poweroff'
       ovirt_vm:
         cluster: Default
         kernel_path: /var/kernel/centos8/vmlinuz
         initrd_path: /var/kernel/centos8/initrd.img
         kernel_params: noverifyssl ks={{ ks_host }}/?hostname={{ create_host }} BOOTIF={{ (ovirt_nics.ovirt_nics | first).mac.address }}
-        kernel_params_persist: false
+        kernel_params_persist: False
+        name: '{{ create_host }}'
+        state: running
+      register: vm
+      when: not vm_exists.ovirt_vms
+
+
+    - name: Wait until the VM finished installing and is powered off
+      ovirt_vm_info:
+        pattern: name={{ create_host }}
+      register: vm_info
+      until: (vm_info.ovirt_vms | first).status == "down"
+      delay: 30
+      retries: 120
+      when: not vm_exists.ovirt_vms
+
+
+    - name: Start the VM once we detect it is powered down from a successful install
+      ovirt_vm:
         name: '{{ create_host }}'
         state: running
