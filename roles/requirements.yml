@@ -1,2 +1,3 @@
 ---
 - src: lukepafford.sudoers
+- src: lukepafford.idm_dns_record
