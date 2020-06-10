@@ -2,3 +2,4 @@
 - src: lukepafford.sudoers
 - src: lukepafford.idm_dns_record
 - src: lukepafford.elk_server
+- src: lukepafford.elk_client
