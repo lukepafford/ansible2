@@ -1,4 +1,4 @@
 ---
 - hosts: log
   roles:
-    - elk_server
+    - lukepafford.elk_server
