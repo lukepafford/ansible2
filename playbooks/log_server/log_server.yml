@@ -1,0 +1,4 @@
+---
+- hosts: log
+  roles:
+    - elk_server
